@@ -1,9 +1,3 @@
-import org.antlr.v4.runtime.ANTLRInputStream;
-import org.antlr.v4.runtime.CommonTokenStream;
-
-import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
-
 import java.io.IOException;
 
 public class Main {
@@ -12,6 +6,13 @@ public class Main {
 
         String formula = "mu Z.<a>true";
 
+        AldebaranReader reader = new AldebaranReader();
+        AldebaranStructure aldebaranStructure = reader.ReadFile("res/test.aut");
+
+        if (aldebaranStructure == null)
+            return;
+
+        /*
         MuCalculusLexer lexer = new MuCalculusLexer( new ANTLRInputStream(formula));
         CommonTokenStream tokens = new CommonTokenStream( lexer );
         MuCalculusParser parser = new MuCalculusParser( tokens );
@@ -21,11 +22,7 @@ public class Main {
         //MuCalculusBaseVisitor visitor = new MuCalculusBaseVisitor();
         //visitor.visit(tree);
         ParseTreeWalker walker = new ParseTreeWalker();
-        walker.
-
-        walker.walk(new MuCalculusBaseListener(), tree);
-
-        CommonAST
+*/
 
         //
         //walker.walk();
