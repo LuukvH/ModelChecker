@@ -1,4 +1,6 @@
 // Generated from C:/Users/laj/Documents/GitHub/ModelChecker\Aldebaran.g4 by ANTLR 4.5.1
+import models.AldebaranStructure;
+import models.Transition;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
 /**

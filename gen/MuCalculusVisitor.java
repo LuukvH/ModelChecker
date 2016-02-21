@@ -51,4 +51,40 @@ public interface MuCalculusVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitGreatestfixpoint(MuCalculusParser.GreatestfixpointContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MuCalculusParser#left}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLeft(MuCalculusParser.LeftContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MuCalculusParser#right}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRight(MuCalculusParser.RightContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MuCalculusParser#label}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLabel(MuCalculusParser.LabelContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MuCalculusParser#mfalse}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMfalse(MuCalculusParser.MfalseContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MuCalculusParser#mtrue}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMtrue(MuCalculusParser.MtrueContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MuCalculusParser#recursion}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRecursion(MuCalculusParser.RecursionContext ctx);
 }

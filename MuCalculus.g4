@@ -1,15 +1,24 @@
 grammar MuCalculus;
 
-formulae : FALSE | TRUE | RECURSIONVARIABLE | conjunction | disjunction | diamond | box | leastfixpoint | greatestfixpoint;
+formulae : mfalse | mtrue | recursion | conjunction | disjunction | diamond | box | leastfixpoint | greatestfixpoint;
 
-conjunction : '(' formulae '&&' formulae ')';
-disjunction : '(' formulae '&&' formulae ')';
-diamond : '<' LITERAL '>' formulae;
-box : '[' LITERAL ']' formulae;
-leastfixpoint : 'mu' (' '*) RECURSIONVARIABLE (' '*) '.' formulae;
-greatestfixpoint : 'nu' (' '*) RECURSIONVARIABLE (' '*) '.' formulae;
+conjunction : '(' left '&&' right ')';
+disjunction : '(' left '||' right ')';
+diamond : '<' label '>' formulae;
+box : '[' label ']' formulae;
+leastfixpoint : 'mu' recursion '.' formulae;
+greatestfixpoint : 'nu' recursion '.' formulae;
+
+left : formulae;
+right : formulae;
+label : STRING;
+mfalse : FALSE;
+mtrue : TRUE;
+recursion : RECURSIONVARIABLE;
 
 FALSE : 'false';
 TRUE : 'true';
-LITERAL : ('a'..'z');
-RECURSIONVARIABLE : ('A'..'Z');
+NUMBER : [0-9]+;
+STRING : [a-z]+;
+RECURSIONVARIABLE : [A-Z];
+WHITESPACE : ( '\t' | ' ' | '\r' | '\n'| '\u000C' )+ -> skip;

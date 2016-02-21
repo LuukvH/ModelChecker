@@ -76,4 +76,64 @@ public interface MuCalculusListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitGreatestfixpoint(MuCalculusParser.GreatestfixpointContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MuCalculusParser#left}.
+	 * @param ctx the parse tree
+	 */
+	void enterLeft(MuCalculusParser.LeftContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MuCalculusParser#left}.
+	 * @param ctx the parse tree
+	 */
+	void exitLeft(MuCalculusParser.LeftContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MuCalculusParser#right}.
+	 * @param ctx the parse tree
+	 */
+	void enterRight(MuCalculusParser.RightContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MuCalculusParser#right}.
+	 * @param ctx the parse tree
+	 */
+	void exitRight(MuCalculusParser.RightContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MuCalculusParser#label}.
+	 * @param ctx the parse tree
+	 */
+	void enterLabel(MuCalculusParser.LabelContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MuCalculusParser#label}.
+	 * @param ctx the parse tree
+	 */
+	void exitLabel(MuCalculusParser.LabelContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MuCalculusParser#mfalse}.
+	 * @param ctx the parse tree
+	 */
+	void enterMfalse(MuCalculusParser.MfalseContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MuCalculusParser#mfalse}.
+	 * @param ctx the parse tree
+	 */
+	void exitMfalse(MuCalculusParser.MfalseContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MuCalculusParser#mtrue}.
+	 * @param ctx the parse tree
+	 */
+	void enterMtrue(MuCalculusParser.MtrueContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MuCalculusParser#mtrue}.
+	 * @param ctx the parse tree
+	 */
+	void exitMtrue(MuCalculusParser.MtrueContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MuCalculusParser#recursion}.
+	 * @param ctx the parse tree
+	 */
+	void enterRecursion(MuCalculusParser.RecursionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MuCalculusParser#recursion}.
+	 * @param ctx the parse tree
+	 */
+	void exitRecursion(MuCalculusParser.RecursionContext ctx);
 }
