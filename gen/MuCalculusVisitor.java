@@ -82,9 +82,15 @@ public interface MuCalculusVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitMtrue(MuCalculusParser.MtrueContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MuCalculusParser#recursion}.
+	 * Visit a parse tree produced by {@link MuCalculusParser#startrecursion}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitRecursion(MuCalculusParser.RecursionContext ctx);
+	T visitStartrecursion(MuCalculusParser.StartrecursionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MuCalculusParser#endrecursion}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEndrecursion(MuCalculusParser.EndrecursionContext ctx);
 }

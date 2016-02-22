@@ -18,15 +18,23 @@ public class Main {
 
         MixedKripkeStructure mixedKripkeStructure = new MixedKripkeStructure(aldebaranStructure);
 
-        String formula = "mu D. nu A .(nu B .true && mu C . true)";
+        String formula = "mu D. nu A .(mu B . (D || (A || B)) && mu D . true)";
+        //String formula = "mu D. nu B. true";
         MuCalculusLexer lexer = new MuCalculusLexer( new ANTLRInputStream(formula));
         CommonTokenStream tokens = new CommonTokenStream( lexer );
         MuCalculusParser parser = new MuCalculusParser( tokens );
 
         ParseTree tree = parser.formulae();
-        MuCalculusAlternationDepth visitor = new MuCalculusAlternationDepth();
+        MuCalculusDependentAlternationDepth visitor = new MuCalculusDependentAlternationDepth();
         int alternationDepth = visitor.visit(tree).getDepth();
         System.out.println(String.format("Alternation depth: %d", alternationDepth));
+
+
+
+
+
+
+
 
         //MuCalculusBaseVisitor visitor = new MuCalculusBaseVisitor();
         //visitor.visit(tree);

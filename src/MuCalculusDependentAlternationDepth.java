@@ -2,10 +2,17 @@ import enums.Fixpoint;
 import models.AlternationDepthNode;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
-public class MuCalculusAlternationDepth extends AbstractParseTreeVisitor<AlternationDepthNode> implements MuCalculusVisitor<AlternationDepthNode> {
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+public class MuCalculusDependentAlternationDepth extends AbstractParseTreeVisitor<AlternationDepthNode> implements MuCalculusVisitor<AlternationDepthNode> {
+
+	private Map<String, Fixpoint> fixpoints = new HashMap<String, Fixpoint>();
 
 	@Override public AlternationDepthNode visitFormulae(MuCalculusParser.FormulaeContext ctx) {
-		return visit(ctx.getChild(0));
+		return visitChildren(ctx);
 	}
 
 	@Override public AlternationDepthNode visitConjunction(MuCalculusParser.ConjunctionContext ctx) {
@@ -14,13 +21,8 @@ public class MuCalculusAlternationDepth extends AbstractParseTreeVisitor<Alterna
 
 		if (left.getDepth() > right.getDepth()) {
 			return left;
-		} else if (right.getDepth() > left.getDepth()) {
-			return right;
 		} else {
-			if (left.getFixpoint() != right.getFixpoint()) {
-				left.setFixpoint(Fixpoint.none);
-			}
-			return left;
+			return right;
 		}
 	}
 
@@ -30,13 +32,8 @@ public class MuCalculusAlternationDepth extends AbstractParseTreeVisitor<Alterna
 
 		if (left.getDepth() > right.getDepth()) {
 			return left;
-		} else if (right.getDepth() > left.getDepth() ) {
-			return right;
 		} else {
-			if (left.getFixpoint() != right.getFixpoint()) {
-				left.setFixpoint(Fixpoint.none);
-			}
-			return left;
+			return right;
 		}
 	}
 
@@ -49,22 +46,28 @@ public class MuCalculusAlternationDepth extends AbstractParseTreeVisitor<Alterna
 	}
 
 	@Override public AlternationDepthNode visitLeastfixpoint(MuCalculusParser.LeastfixpointContext ctx) {
+		String variable = visit(ctx.startrecursion()).getVariable();
+		fixpoints.put(variable, Fixpoint.least);
 		AlternationDepthNode node = visit(ctx.formulae());
-		if (node.getFixpoint() != Fixpoint.least) {
-			node.setDepth(1 + node.getDepth());
+		fixpoints.remove(variable);
+		if (node.getFixpoint() == Fixpoint.greatest) {
+			if (node.getVariable() != variable) {
+				node.setDepth(node.getDepth() + 1);
+			}
 		}
-		node.setFixpoint(Fixpoint.least);
-
 		return node;
 	}
 
 	@Override public AlternationDepthNode visitGreatestfixpoint(MuCalculusParser.GreatestfixpointContext ctx) {
+		String variable = visit(ctx.startrecursion()).getVariable();
+		fixpoints.put(variable, Fixpoint.greatest);
 		AlternationDepthNode node = visit(ctx.formulae());
-		if (node.getFixpoint() != Fixpoint.greatest) {
-			node.setDepth(1 + node.getDepth());
+		fixpoints.remove(variable);
+		if (node.getFixpoint() == Fixpoint.least) {
+			if (node.getVariable() != variable) {
+				node.setDepth(node.getDepth() + 1);
+			}
 		}
-		node.setFixpoint(Fixpoint.greatest);
-
 		return node;
 	}
 
@@ -89,10 +92,10 @@ public class MuCalculusAlternationDepth extends AbstractParseTreeVisitor<Alterna
 	}
 
 	@Override public AlternationDepthNode visitStartrecursion(MuCalculusParser.StartrecursionContext ctx) {
-		return new AlternationDepthNode(0, Fixpoint.none);
+		return new AlternationDepthNode(0, ctx.getText(), Fixpoint.none);
 	}
 
 	@Override public AlternationDepthNode visitEndrecursion(MuCalculusParser.EndrecursionContext ctx) {
-		return new AlternationDepthNode(0, Fixpoint.none);
+		return new AlternationDepthNode(0, ctx.getText(), fixpoints.get(ctx.getText()));
 	}
 }

@@ -22,10 +22,12 @@ public class MuCalculusParser extends Parser {
 	public static final int
 		RULE_formulae = 0, RULE_conjunction = 1, RULE_disjunction = 2, RULE_diamond = 3, 
 		RULE_box = 4, RULE_leastfixpoint = 5, RULE_greatestfixpoint = 6, RULE_left = 7, 
-		RULE_right = 8, RULE_label = 9, RULE_mfalse = 10, RULE_mtrue = 11, RULE_recursion = 12;
+		RULE_right = 8, RULE_label = 9, RULE_mfalse = 10, RULE_mtrue = 11, RULE_startrecursion = 12, 
+		RULE_endrecursion = 13;
 	public static final String[] ruleNames = {
 		"formulae", "conjunction", "disjunction", "diamond", "box", "leastfixpoint", 
-		"greatestfixpoint", "left", "right", "label", "mfalse", "mtrue", "recursion"
+		"greatestfixpoint", "left", "right", "label", "mfalse", "mtrue", "startrecursion", 
+		"endrecursion"
 	};
 
 	private static final String[] _LITERAL_NAMES = {
@@ -92,8 +94,8 @@ public class MuCalculusParser extends Parser {
 		public MtrueContext mtrue() {
 			return getRuleContext(MtrueContext.class,0);
 		}
-		public RecursionContext recursion() {
-			return getRuleContext(RecursionContext.class,0);
+		public EndrecursionContext endrecursion() {
+			return getRuleContext(EndrecursionContext.class,0);
 		}
 		public ConjunctionContext conjunction() {
 			return getRuleContext(ConjunctionContext.class,0);
@@ -136,68 +138,68 @@ public class MuCalculusParser extends Parser {
 		FormulaeContext _localctx = new FormulaeContext(_ctx, getState());
 		enterRule(_localctx, 0, RULE_formulae);
 		try {
-			setState(35);
+			setState(37);
 			switch ( getInterpreter().adaptivePredict(_input,0,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(26);
+				setState(28);
 				mfalse();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(27);
+				setState(29);
 				mtrue();
 				}
 				break;
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(28);
-				recursion();
+				setState(30);
+				endrecursion();
 				}
 				break;
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(29);
+				setState(31);
 				conjunction();
 				}
 				break;
 			case 5:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(30);
+				setState(32);
 				disjunction();
 				}
 				break;
 			case 6:
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(31);
+				setState(33);
 				diamond();
 				}
 				break;
 			case 7:
 				enterOuterAlt(_localctx, 7);
 				{
-				setState(32);
+				setState(34);
 				box();
 				}
 				break;
 			case 8:
 				enterOuterAlt(_localctx, 8);
 				{
-				setState(33);
+				setState(35);
 				leastfixpoint();
 				}
 				break;
 			case 9:
 				enterOuterAlt(_localctx, 9);
 				{
-				setState(34);
+				setState(36);
 				greatestfixpoint();
 				}
 				break;
@@ -246,15 +248,15 @@ public class MuCalculusParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(37);
-			match(T__0);
-			setState(38);
-			left();
 			setState(39);
-			match(T__1);
+			match(T__0);
 			setState(40);
-			right();
+			left();
 			setState(41);
+			match(T__1);
+			setState(42);
+			right();
+			setState(43);
 			match(T__2);
 			}
 		}
@@ -301,15 +303,15 @@ public class MuCalculusParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(43);
-			match(T__0);
-			setState(44);
-			left();
 			setState(45);
-			match(T__3);
+			match(T__0);
 			setState(46);
-			right();
+			left();
 			setState(47);
+			match(T__3);
+			setState(48);
+			right();
+			setState(49);
 			match(T__2);
 			}
 		}
@@ -356,13 +358,13 @@ public class MuCalculusParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(49);
-			match(T__4);
-			setState(50);
-			label();
 			setState(51);
-			match(T__5);
+			match(T__4);
 			setState(52);
+			label();
+			setState(53);
+			match(T__5);
+			setState(54);
 			formulae();
 			}
 		}
@@ -409,13 +411,13 @@ public class MuCalculusParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(54);
-			match(T__6);
-			setState(55);
-			label();
 			setState(56);
-			match(T__7);
+			match(T__6);
 			setState(57);
+			label();
+			setState(58);
+			match(T__7);
+			setState(59);
 			formulae();
 			}
 		}
@@ -431,8 +433,8 @@ public class MuCalculusParser extends Parser {
 	}
 
 	public static class LeastfixpointContext extends ParserRuleContext {
-		public RecursionContext recursion() {
-			return getRuleContext(RecursionContext.class,0);
+		public StartrecursionContext startrecursion() {
+			return getRuleContext(StartrecursionContext.class,0);
 		}
 		public FormulaeContext formulae() {
 			return getRuleContext(FormulaeContext.class,0);
@@ -462,13 +464,13 @@ public class MuCalculusParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(59);
-			match(T__8);
-			setState(60);
-			recursion();
 			setState(61);
-			match(T__9);
+			match(T__8);
 			setState(62);
+			startrecursion();
+			setState(63);
+			match(T__9);
+			setState(64);
 			formulae();
 			}
 		}
@@ -484,8 +486,8 @@ public class MuCalculusParser extends Parser {
 	}
 
 	public static class GreatestfixpointContext extends ParserRuleContext {
-		public RecursionContext recursion() {
-			return getRuleContext(RecursionContext.class,0);
+		public StartrecursionContext startrecursion() {
+			return getRuleContext(StartrecursionContext.class,0);
 		}
 		public FormulaeContext formulae() {
 			return getRuleContext(FormulaeContext.class,0);
@@ -515,13 +517,13 @@ public class MuCalculusParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(64);
-			match(T__10);
-			setState(65);
-			recursion();
 			setState(66);
-			match(T__9);
+			match(T__10);
 			setState(67);
+			startrecursion();
+			setState(68);
+			match(T__9);
+			setState(69);
 			formulae();
 			}
 		}
@@ -565,7 +567,7 @@ public class MuCalculusParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(69);
+			setState(71);
 			formulae();
 			}
 		}
@@ -609,7 +611,7 @@ public class MuCalculusParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(71);
+			setState(73);
 			formulae();
 			}
 		}
@@ -651,7 +653,7 @@ public class MuCalculusParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(73);
+			setState(75);
 			match(STRING);
 			}
 		}
@@ -693,7 +695,7 @@ public class MuCalculusParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(75);
+			setState(77);
 			match(FALSE);
 			}
 		}
@@ -735,7 +737,7 @@ public class MuCalculusParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(77);
+			setState(79);
 			match(TRUE);
 			}
 		}
@@ -750,34 +752,76 @@ public class MuCalculusParser extends Parser {
 		return _localctx;
 	}
 
-	public static class RecursionContext extends ParserRuleContext {
+	public static class StartrecursionContext extends ParserRuleContext {
 		public TerminalNode RECURSIONVARIABLE() { return getToken(MuCalculusParser.RECURSIONVARIABLE, 0); }
-		public RecursionContext(ParserRuleContext parent, int invokingState) {
+		public StartrecursionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_recursion; }
+		@Override public int getRuleIndex() { return RULE_startrecursion; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MuCalculusListener ) ((MuCalculusListener)listener).enterRecursion(this);
+			if ( listener instanceof MuCalculusListener ) ((MuCalculusListener)listener).enterStartrecursion(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MuCalculusListener ) ((MuCalculusListener)listener).exitRecursion(this);
+			if ( listener instanceof MuCalculusListener ) ((MuCalculusListener)listener).exitStartrecursion(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MuCalculusVisitor ) return ((MuCalculusVisitor<? extends T>)visitor).visitRecursion(this);
+			if ( visitor instanceof MuCalculusVisitor ) return ((MuCalculusVisitor<? extends T>)visitor).visitStartrecursion(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
-	public final RecursionContext recursion() throws RecognitionException {
-		RecursionContext _localctx = new RecursionContext(_ctx, getState());
-		enterRule(_localctx, 24, RULE_recursion);
+	public final StartrecursionContext startrecursion() throws RecognitionException {
+		StartrecursionContext _localctx = new StartrecursionContext(_ctx, getState());
+		enterRule(_localctx, 24, RULE_startrecursion);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(79);
+			setState(81);
+			match(RECURSIONVARIABLE);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class EndrecursionContext extends ParserRuleContext {
+		public TerminalNode RECURSIONVARIABLE() { return getToken(MuCalculusParser.RECURSIONVARIABLE, 0); }
+		public EndrecursionContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_endrecursion; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MuCalculusListener ) ((MuCalculusListener)listener).enterEndrecursion(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MuCalculusListener ) ((MuCalculusListener)listener).exitEndrecursion(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MuCalculusVisitor ) return ((MuCalculusVisitor<? extends T>)visitor).visitEndrecursion(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final EndrecursionContext endrecursion() throws RecognitionException {
+		EndrecursionContext _localctx = new EndrecursionContext(_ctx, getState());
+		enterRule(_localctx, 26, RULE_endrecursion);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(83);
 			match(RECURSIONVARIABLE);
 			}
 		}
@@ -793,25 +837,26 @@ public class MuCalculusParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\23T\4\2\t\2\4\3\t"+
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\23X\4\2\t\2\4\3\t"+
 		"\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t\13\4"+
-		"\f\t\f\4\r\t\r\4\16\t\16\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\5\2&\n\2"+
-		"\3\3\3\3\3\3\3\3\3\3\3\3\3\4\3\4\3\4\3\4\3\4\3\4\3\5\3\5\3\5\3\5\3\5\3"+
-		"\6\3\6\3\6\3\6\3\6\3\7\3\7\3\7\3\7\3\7\3\b\3\b\3\b\3\b\3\b\3\t\3\t\3\n"+
-		"\3\n\3\13\3\13\3\f\3\f\3\r\3\r\3\16\3\16\3\16\2\2\17\2\4\6\b\n\f\16\20"+
-		"\22\24\26\30\32\2\2N\2%\3\2\2\2\4\'\3\2\2\2\6-\3\2\2\2\b\63\3\2\2\2\n"+
-		"8\3\2\2\2\f=\3\2\2\2\16B\3\2\2\2\20G\3\2\2\2\22I\3\2\2\2\24K\3\2\2\2\26"+
-		"M\3\2\2\2\30O\3\2\2\2\32Q\3\2\2\2\34&\5\26\f\2\35&\5\30\r\2\36&\5\32\16"+
-		"\2\37&\5\4\3\2 &\5\6\4\2!&\5\b\5\2\"&\5\n\6\2#&\5\f\7\2$&\5\16\b\2%\34"+
-		"\3\2\2\2%\35\3\2\2\2%\36\3\2\2\2%\37\3\2\2\2% \3\2\2\2%!\3\2\2\2%\"\3"+
-		"\2\2\2%#\3\2\2\2%$\3\2\2\2&\3\3\2\2\2\'(\7\3\2\2()\5\20\t\2)*\7\4\2\2"+
-		"*+\5\22\n\2+,\7\5\2\2,\5\3\2\2\2-.\7\3\2\2./\5\20\t\2/\60\7\6\2\2\60\61"+
-		"\5\22\n\2\61\62\7\5\2\2\62\7\3\2\2\2\63\64\7\7\2\2\64\65\5\24\13\2\65"+
-		"\66\7\b\2\2\66\67\5\2\2\2\67\t\3\2\2\289\7\t\2\29:\5\24\13\2:;\7\n\2\2"+
-		";<\5\2\2\2<\13\3\2\2\2=>\7\13\2\2>?\5\32\16\2?@\7\f\2\2@A\5\2\2\2A\r\3"+
-		"\2\2\2BC\7\r\2\2CD\5\32\16\2DE\7\f\2\2EF\5\2\2\2F\17\3\2\2\2GH\5\2\2\2"+
-		"H\21\3\2\2\2IJ\5\2\2\2J\23\3\2\2\2KL\7\21\2\2L\25\3\2\2\2MN\7\16\2\2N"+
-		"\27\3\2\2\2OP\7\17\2\2P\31\3\2\2\2QR\7\22\2\2R\33\3\2\2\2\3%";
+		"\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2"+
+		"\5\2(\n\2\3\3\3\3\3\3\3\3\3\3\3\3\3\4\3\4\3\4\3\4\3\4\3\4\3\5\3\5\3\5"+
+		"\3\5\3\5\3\6\3\6\3\6\3\6\3\6\3\7\3\7\3\7\3\7\3\7\3\b\3\b\3\b\3\b\3\b\3"+
+		"\t\3\t\3\n\3\n\3\13\3\13\3\f\3\f\3\r\3\r\3\16\3\16\3\17\3\17\3\17\2\2"+
+		"\20\2\4\6\b\n\f\16\20\22\24\26\30\32\34\2\2Q\2\'\3\2\2\2\4)\3\2\2\2\6"+
+		"/\3\2\2\2\b\65\3\2\2\2\n:\3\2\2\2\f?\3\2\2\2\16D\3\2\2\2\20I\3\2\2\2\22"+
+		"K\3\2\2\2\24M\3\2\2\2\26O\3\2\2\2\30Q\3\2\2\2\32S\3\2\2\2\34U\3\2\2\2"+
+		"\36(\5\26\f\2\37(\5\30\r\2 (\5\34\17\2!(\5\4\3\2\"(\5\6\4\2#(\5\b\5\2"+
+		"$(\5\n\6\2%(\5\f\7\2&(\5\16\b\2\'\36\3\2\2\2\'\37\3\2\2\2\' \3\2\2\2\'"+
+		"!\3\2\2\2\'\"\3\2\2\2\'#\3\2\2\2\'$\3\2\2\2\'%\3\2\2\2\'&\3\2\2\2(\3\3"+
+		"\2\2\2)*\7\3\2\2*+\5\20\t\2+,\7\4\2\2,-\5\22\n\2-.\7\5\2\2.\5\3\2\2\2"+
+		"/\60\7\3\2\2\60\61\5\20\t\2\61\62\7\6\2\2\62\63\5\22\n\2\63\64\7\5\2\2"+
+		"\64\7\3\2\2\2\65\66\7\7\2\2\66\67\5\24\13\2\678\7\b\2\289\5\2\2\29\t\3"+
+		"\2\2\2:;\7\t\2\2;<\5\24\13\2<=\7\n\2\2=>\5\2\2\2>\13\3\2\2\2?@\7\13\2"+
+		"\2@A\5\32\16\2AB\7\f\2\2BC\5\2\2\2C\r\3\2\2\2DE\7\r\2\2EF\5\32\16\2FG"+
+		"\7\f\2\2GH\5\2\2\2H\17\3\2\2\2IJ\5\2\2\2J\21\3\2\2\2KL\5\2\2\2L\23\3\2"+
+		"\2\2MN\7\21\2\2N\25\3\2\2\2OP\7\16\2\2P\27\3\2\2\2QR\7\17\2\2R\31\3\2"+
+		"\2\2ST\7\22\2\2T\33\3\2\2\2UV\7\22\2\2V\35\3\2\2\2\3\'";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

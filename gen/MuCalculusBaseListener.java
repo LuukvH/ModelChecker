@@ -159,13 +159,25 @@ public class MuCalculusBaseListener implements MuCalculusListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterRecursion(MuCalculusParser.RecursionContext ctx) { }
+	@Override public void enterStartrecursion(MuCalculusParser.StartrecursionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitRecursion(MuCalculusParser.RecursionContext ctx) { }
+	@Override public void exitStartrecursion(MuCalculusParser.StartrecursionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterEndrecursion(MuCalculusParser.EndrecursionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitEndrecursion(MuCalculusParser.EndrecursionContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

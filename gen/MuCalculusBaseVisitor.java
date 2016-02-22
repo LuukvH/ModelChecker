@@ -100,5 +100,12 @@ public class MuCalculusBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitRecursion(MuCalculusParser.RecursionContext ctx) { return visitChildren(ctx); }
+	@Override public T visitStartrecursion(MuCalculusParser.StartrecursionContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitEndrecursion(MuCalculusParser.EndrecursionContext ctx) { return visitChildren(ctx); }
 }

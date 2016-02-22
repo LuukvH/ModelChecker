@@ -127,13 +127,23 @@ public interface MuCalculusListener extends ParseTreeListener {
 	 */
 	void exitMtrue(MuCalculusParser.MtrueContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MuCalculusParser#recursion}.
+	 * Enter a parse tree produced by {@link MuCalculusParser#startrecursion}.
 	 * @param ctx the parse tree
 	 */
-	void enterRecursion(MuCalculusParser.RecursionContext ctx);
+	void enterStartrecursion(MuCalculusParser.StartrecursionContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link MuCalculusParser#recursion}.
+	 * Exit a parse tree produced by {@link MuCalculusParser#startrecursion}.
 	 * @param ctx the parse tree
 	 */
-	void exitRecursion(MuCalculusParser.RecursionContext ctx);
+	void exitStartrecursion(MuCalculusParser.StartrecursionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MuCalculusParser#endrecursion}.
+	 * @param ctx the parse tree
+	 */
+	void enterEndrecursion(MuCalculusParser.EndrecursionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MuCalculusParser#endrecursion}.
+	 * @param ctx the parse tree
+	 */
+	void exitEndrecursion(MuCalculusParser.EndrecursionContext ctx);
 }
