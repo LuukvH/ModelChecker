@@ -35,19 +35,35 @@ public class ModelChecking extends AbstractParseTreeVisitor<Set<Integer>> implem
 	}
 
 	@Override public Set<Integer> visitDiamond(MuCalculusParser.DiamondContext ctx) {
-		return visit(ctx.formulae());
+		String label = ctx.label().getText();
+		return diamond(label, visit(ctx.formulae()));
+	}
+
+	private Set<Integer> not(Set<Integer> s) {
+		Set<Integer> states = new HashSet<Integer>();
+		states.addAll(mixedKripkeStructure.States);
+
+		states.removeAll(s);
+		return states;
+	}
+
+	private Set<Integer> box(String label, Set<Integer> s) {
+		Set<Integer> states = new HashSet<Integer>();
+
+		for (Integer t : s) {
+			states.addAll(mixedKripkeStructure.Find(label, t));
+		}
+
+		return states;
+	}
+
+	private Set<Integer> diamond(String label, Set<Integer> s) {
+		return not(box(label, not(s)));
 	}
 
 	@Override public Set<Integer> visitBox(MuCalculusParser.BoxContext ctx) {
 		String label = ctx.label().getText();
-		Set<Integer> t = visit(ctx.formulae());
-		Set<Integer> states = new HashSet<Integer>();
-
-		for (Integer s : t) {
-			states.addAll(mixedKripkeStructure.Find(label, s));
-		}
-
-		return states;
+		return box(label, (visit(ctx.formulae())));
 	}
 
 	@Override public Set<Integer> visitLeastfixpoint(MuCalculusParser.LeastfixpointContext ctx) {

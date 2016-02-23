@@ -1,20 +1,17 @@
 import models.AldebaranStructure;
 import models.MixedKripkeStructure;
-import org.antlr.v4.runtime.ANTLRInputStream;
-import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.tree.ParseTree;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by laj on 23-2-2016.
  */
-public class Boolean {
+public class Fixpoint {
 
     MixedKripkeStructure mixedKripkeStructure;
 
@@ -31,15 +28,15 @@ public class Boolean {
 
     @Test
     public void Expression1() throws Exception {
-        String formula = "true";
+        String formula = "nu X. X";
         Set<Integer> result = FormulaValidator.Validate(mixedKripkeStructure, formula);
-        Set<Integer> expected_result = mixedKripkeStructure.States;
+        Set<Integer> expected_result = new HashSet<Integer>();
         assertEquals(expected_result, result);
     }
 
     @Test
     public void Expression2() throws Exception {
-        String formula = "false";
+        String formula = "mu Y. Y";
         Set<Integer> result = FormulaValidator.Validate(mixedKripkeStructure, formula);
         Set<Integer> expected_result = new HashSet<>();
         assertEquals(expected_result, result);
@@ -47,7 +44,7 @@ public class Boolean {
 
     @Test
     public void Expression3() throws Exception {
-        String formula = "(false && true)";
+        String formula = "nu X. mu Y. (X || Y)";
         Set<Integer> result = FormulaValidator.Validate(mixedKripkeStructure, formula);
         Set<Integer> expected_result = new HashSet<>();
         assertEquals(expected_result, result);
@@ -55,42 +52,23 @@ public class Boolean {
 
     @Test
     public void Expression4() throws Exception {
-        String formula = "(true && false)";
+        String formula = "nu X. mu Y. (X && Y)";
         Set<Integer> result = FormulaValidator.Validate(mixedKripkeStructure, formula);
         Set<Integer> expected_result = new HashSet<>();
+        expected_result.add(3);
+        expected_result.add(5);
+        expected_result.add(7);
         assertEquals(expected_result, result);
     }
 
     @Test
     public void Expression5() throws Exception {
-        String formula = "(true && true)";
-        Set<Integer> result = FormulaValidator.Validate(mixedKripkeStructure, formula);
-        Set<Integer> expected_result = mixedKripkeStructure.States;
-        assertEquals(expected_result, result);
-    }
-
-    @Test
-    public void Expression6() throws Exception {
-        String formula = "(false || true)";
-        Set<Integer> result = FormulaValidator.Validate(mixedKripkeStructure, formula);
-        Set<Integer> expected_result = mixedKripkeStructure.States;
-        assertEquals(expected_result, result);
-    }
-
-    @Test
-    public void Expression7() throws Exception {
-        String formula = "(false || false)";
+        String formula = "nu X. (X &&  mu Y. Y)";
         Set<Integer> result = FormulaValidator.Validate(mixedKripkeStructure, formula);
         Set<Integer> expected_result = new HashSet<>();
+        expected_result.add(3);
+        expected_result.add(5);
+        expected_result.add(7);
         assertEquals(expected_result, result);
     }
-
-    @Test
-    public void Expression8() throws Exception {
-        String formula = "(true || false)";
-        Set<Integer> result = FormulaValidator.Validate(mixedKripkeStructure, formula);
-        Set<Integer> expected_result = mixedKripkeStructure.States;
-        assertEquals(expected_result, result);
-    }
-
 }
