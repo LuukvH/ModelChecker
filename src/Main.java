@@ -5,6 +5,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.io.IOException;
+import java.text.Normalizer;
 import java.util.Set;
 
 public class Main {
@@ -20,22 +21,9 @@ public class Main {
         MixedKripkeStructure mixedKripkeStructure = new MixedKripkeStructure(aldebaranStructure);
 
         //String formula = "mu D. nu A .(mu B . (D || (A || B)) && mu D . true)";
-        String formula = "mu X .[a] true";
-        MuCalculusLexer lexer = new MuCalculusLexer( new ANTLRInputStream(formula));
-        CommonTokenStream tokens = new CommonTokenStream( lexer );
-        MuCalculusParser parser = new MuCalculusParser( tokens );
-
-        ParseTree tree = parser.formulae();
-        MuCalculusDependentAlternationDepth visitor = new MuCalculusDependentAlternationDepth();
-        int alternationDepth = visitor.visit(tree).getDepth();
-        System.out.println(String.format("Alternation depth: %d", alternationDepth));
-
-        ModelChecking modelChecking = new ModelChecking(mixedKripkeStructure);
-        Set<Integer> result = modelChecking.visit(tree);
+        String formula = "([tau] Y || [a]true)";
+        Set<Integer> result = FormulaValidator.Validate(mixedKripkeStructure, formula);
         print(result);
-
-
-
 
         //MuCalculusBaseVisitor visitor = new MuCalculusBaseVisitor();
         //visitor.visit(tree);

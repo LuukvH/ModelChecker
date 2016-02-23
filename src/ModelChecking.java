@@ -51,26 +51,51 @@ public class ModelChecking extends AbstractParseTreeVisitor<Set<Integer>> implem
 	}
 
 	@Override public Set<Integer> visitLeastfixpoint(MuCalculusParser.LeastfixpointContext ctx) {
+		String variable = ctx.startrecursion().getText();
 		Set<Integer> states = new HashSet<Integer>();
 		Set<Integer> nstates = visit(ctx.formulae());
 
+		// Debugging only //
+		int i = 0;
+		System.out.println(String.format("Least fixpoint itteration %d: %s", i, states.toString()));
+		// Debugging only //
+
 		while (!states.equals(nstates)) {
 			states.addAll(nstates);
-			fixpoint.put(ctx.startrecursion().getText(), states);
+
+			// Debugging only //
+			i++;
+			System.out.println(String.format("Least fixpoint itteration %d: %s", i, states.toString()));
+			// Debugging only //
+
+			fixpoint.put(variable, states);
 			nstates = visit(ctx.formulae());
 		}
 		return states;
 	}
 
 	@Override public Set<Integer> visitGreatestfixpoint(MuCalculusParser.GreatestfixpointContext ctx) {
+		String variable = ctx.startrecursion().getText();
 		Set<Integer> states = new HashSet<Integer>();
 		states.addAll(mixedKripkeStructure.States);
+		fixpoint.put(variable, states);
 		Set<Integer> nstates = visit(ctx.formulae());
 
+		// Debugging only //
+		int i = 0;
+		System.out.println(String.format("Greatest fixpoint itteration %d: %s", i, states.toString()));
+		// Debugging only //
+
 		while (!states.equals(nstates)) {
-			states = nstates;
+			states.retainAll(nstates);
+
+			// Debugging only //
+			i++;
+			System.out.println(String.format("Greatest fixpoint itteration %d: %s", i, states.toString()));
+			// Debugging only //
+
+			fixpoint.put(variable, states);
 			nstates = visit(ctx.formulae());
-			fixpoint.put(ctx.startrecursion().getText(), nstates);
 		}
 
 		return states;

@@ -1,6 +1,9 @@
 package models;
 
-import javax.print.attribute.IntegerSyntax;
+import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.tree.ParseTree;
+
 import java.util.*;
 
 /**
@@ -38,7 +41,7 @@ public class MixedKripkeStructure {
     private void BuildLabelMap(Set<Transition> transitions) {
         for(Transition t : transitions) {
             Integer start = t.getStartState();
-            Integer end = t.getStartState();
+            Integer end = t.getEndState();
             String label = t.getLabel();
 
             Map<Integer, Set<Integer>> m = labelmap.get(label);
@@ -60,7 +63,7 @@ public class MixedKripkeStructure {
     private void BuildTransitionMap(Set<Transition> transitions) {
         for(Transition t : transitions) {
             Integer start = t.getStartState();
-            Integer end = t.getStartState();
+            Integer end = t.getEndState();
             String label = t.getLabel();
 
             Map<String, Set<Integer>> m = transitionmap.get(start);
