@@ -1,11 +1,11 @@
+import MuCalculus.MuCalculusParser;
+import MuCalculus.MuCalculusVisitor;
 import enums.Fixpoint;
 import models.AlternationDepthNode;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 public class MuCalculusDependentAlternationDepth extends AbstractParseTreeVisitor<AlternationDepthNode> implements MuCalculusVisitor<AlternationDepthNode> {
 

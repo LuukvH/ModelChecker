@@ -1,8 +1,12 @@
+package MuCalculus;
+
+import MuCalculus.MuCalculusParser;
+import MuCalculus.MuCalculusVisitor;
 import enums.Fixpoint;
 import models.AlternationDepthNode;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
-public class MuCalculusAlternationDepth extends AbstractParseTreeVisitor<AlternationDepthNode> implements MuCalculusVisitor<AlternationDepthNode> {
+public class AlternationDepth extends AbstractParseTreeVisitor<AlternationDepthNode> implements MuCalculusVisitor<AlternationDepthNode> {
 
 	@Override public AlternationDepthNode visitFormulae(MuCalculusParser.FormulaeContext ctx) {
 		return visit(ctx.getChild(0));

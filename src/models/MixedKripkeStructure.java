@@ -1,5 +1,10 @@
 package models;
 
+import MuCalculus.AlternationDepth;
+import MuCalculus.MuCalculusLexer;
+import MuCalculus.MuCalculusParser;
+import models.Aldebaran;
+import models.Transition;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -16,7 +21,7 @@ public class MixedKripkeStructure {
     public Map<Integer, Map<String, Set<Integer>>> transitionmap = new HashMap<Integer, Map<String, Set<Integer>>>();
     private Map<String, Map<Integer, Set<Integer>>> labelmap = new HashMap<String, Map<Integer, Set<Integer>>>(); // label, end, startstates
 
-    public MixedKripkeStructure(AldebaranStructure aldebaranStructure) {
+    public MixedKripkeStructure(Aldebaran aldebaranStructure) {
         for(Transition transition : aldebaranStructure.transitions) {
             States.add(transition.getStartState());
             States.add(transition.getEndState());
@@ -81,4 +86,24 @@ public class MixedKripkeStructure {
             s.add(end);
         }
     }
+
+    public Set<Integer> Evaluate (String formula) {
+        MuCalculusLexer lexer = new MuCalculusLexer(new ANTLRInputStream(formula));
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        MuCalculusParser parser = new MuCalculusParser(tokens);
+        ParseTree tree = parser.formulae();
+
+        // Formula
+        System.out.println(String.format("Evaluate: %s", formula));
+
+        // Calculate alternation depth
+        AlternationDepth alternationDepth = new AlternationDepth();
+        System.out.println(String.format("Alternation depth: %d", alternationDepth.visit(tree).getDepth()));
+
+        ModelChecking modelChecking = new ModelChecking(this);
+        Set<Integer> result = modelChecking.visit(tree);
+
+        return result;
+    }
+
 }

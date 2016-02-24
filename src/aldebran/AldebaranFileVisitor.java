@@ -1,5 +1,6 @@
-// Generated from C:/Users/laj/Documents/GitHub/ModelChecker\Aldebaran.g4 by ANTLR 4.5.1
-import models.AldebaranStructure;
+package aldebran;
+
+import models.Aldebaran;
 import models.Transition;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
@@ -13,11 +14,11 @@ import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
  */
 public class AldebaranFileVisitor<T> extends AbstractParseTreeVisitor<T> implements AldebaranVisitor<T> {
 
-	public AldebaranStructure aldebaranStructure;
+	public Aldebaran aldebaranStructure;
 	private Transition transition;
 
 	@Override public T visitKripkestructure(AldebaranParser.KripkestructureContext ctx) {
-		aldebaranStructure = new AldebaranStructure();
+		aldebaranStructure = new Aldebaran();
 		return visitChildren(ctx);
 	}
 

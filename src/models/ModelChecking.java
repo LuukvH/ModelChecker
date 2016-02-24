@@ -1,5 +1,7 @@
-import enums.Fixpoint;
-import models.AlternationDepthNode;
+package models;
+
+import MuCalculus.MuCalculusParser;
+import MuCalculus.MuCalculusVisitor;
 import models.MixedKripkeStructure;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 

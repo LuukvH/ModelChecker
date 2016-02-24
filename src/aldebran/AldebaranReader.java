@@ -1,4 +1,6 @@
-import models.AldebaranStructure;
+package aldebran;
+
+import models.Aldebaran;
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -10,7 +12,7 @@ import java.io.IOException;
  */
 public class AldebaranReader {
 
-    public AldebaranStructure ReadFile(String filename) {
+    public Aldebaran ReadFile(String filename) {
         AldebaranLexer lexer = null;
         try {
             lexer = new AldebaranLexer(new ANTLRFileStream(filename));

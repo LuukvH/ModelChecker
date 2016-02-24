@@ -1,12 +1,14 @@
 package models;
 
+import models.Transition;
+
 import java.util.HashSet;
 import java.util.Set;
 
 /**
  * Created by laj on 21-2-2016.
  */
-public class AldebaranStructure {
+public class Aldebaran {
 
     private int firstState=0;
     private int nrOfStates = 0;

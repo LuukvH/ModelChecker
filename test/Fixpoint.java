@@ -1,4 +1,5 @@
-import models.AldebaranStructure;
+import aldebran.AldebaranReader;
+import models.Aldebaran;
 import models.MixedKripkeStructure;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,7 +19,7 @@ public class Fixpoint {
     @Before
     public void setUp() throws Exception {
         AldebaranReader reader = new AldebaranReader();
-        AldebaranStructure aldebaranStructure = reader.ReadFile("res/test.aut");
+        Aldebaran aldebaranStructure = reader.ReadFile("res/test.aut");
 
         if (aldebaranStructure == null)
             return;
@@ -29,15 +30,15 @@ public class Fixpoint {
     @Test
     public void Expression1() throws Exception {
         String formula = "nu X. X";
-        Set<Integer> result = FormulaValidator.Validate(mixedKripkeStructure, formula);
-        Set<Integer> expected_result = new HashSet<Integer>();
+        Set<Integer> result = mixedKripkeStructure.Evaluate(formula);
+        Set<Integer> expected_result = mixedKripkeStructure.States;
         assertEquals(expected_result, result);
     }
 
     @Test
     public void Expression2() throws Exception {
         String formula = "mu Y. Y";
-        Set<Integer> result = FormulaValidator.Validate(mixedKripkeStructure, formula);
+        Set<Integer> result = mixedKripkeStructure.Evaluate(formula);
         Set<Integer> expected_result = new HashSet<>();
         assertEquals(expected_result, result);
     }
@@ -45,30 +46,24 @@ public class Fixpoint {
     @Test
     public void Expression3() throws Exception {
         String formula = "nu X. mu Y. (X || Y)";
-        Set<Integer> result = FormulaValidator.Validate(mixedKripkeStructure, formula);
-        Set<Integer> expected_result = new HashSet<>();
+        Set<Integer> result = mixedKripkeStructure.Evaluate(formula);
+        Set<Integer> expected_result = mixedKripkeStructure.States;
         assertEquals(expected_result, result);
     }
 
     @Test
     public void Expression4() throws Exception {
         String formula = "nu X. mu Y. (X && Y)";
-        Set<Integer> result = FormulaValidator.Validate(mixedKripkeStructure, formula);
+        Set<Integer> result = mixedKripkeStructure.Evaluate(formula);
         Set<Integer> expected_result = new HashSet<>();
-        expected_result.add(3);
-        expected_result.add(5);
-        expected_result.add(7);
         assertEquals(expected_result, result);
     }
 
     @Test
     public void Expression5() throws Exception {
         String formula = "nu X. (X &&  mu Y. Y)";
-        Set<Integer> result = FormulaValidator.Validate(mixedKripkeStructure, formula);
+        Set<Integer> result = mixedKripkeStructure.Evaluate(formula);
         Set<Integer> expected_result = new HashSet<>();
-        expected_result.add(3);
-        expected_result.add(5);
-        expected_result.add(7);
         assertEquals(expected_result, result);
     }
 }
