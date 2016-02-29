@@ -78,9 +78,6 @@ public class Modal {
         String formula = "<tau>false";
         BitSet result = mixedKripkeStructure.Evaluate(formula);
         BitSet expected_result = new BitSet(mixedKripkeStructure.StateSize());
-        expected_result.set(3);
-        expected_result.set(5);
-        expected_result.set(7);
         assertEquals(expected_result, result);
     }
 

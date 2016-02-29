@@ -1,4 +1,4 @@
-package MuCalculus;
+package models;
 
 import MuCalculus.MuCalculusParser;
 import MuCalculus.MuCalculusVisitor;

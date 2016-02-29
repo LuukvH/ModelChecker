@@ -17,11 +17,11 @@ public class Main {
 
         MixedKripkeStructure mixedKripkeStructure = new MixedKripkeStructure(aldebaranStructure);
 
-        //String formula = "mu D. nu A .(mu B . (D || (A || B)) && mu D . true)";
-        String formula = "<a>true";
-        BitSet result = mixedKripkeStructure.Evaluate(formula);
+        String formula = "mu D. nu A .(mu B . (D || (A || B)) && mu D . true)";
+        //String formula = "<a>true";
 
-        System.out.println(result.toString());
+        BitSet result = mixedKripkeStructure.Evaluate(formula);
+        //System.out.println(result.toString());
 
         //MuCalculusBaseVisitor visitor = new MuCalculusBaseVisitor();
         //visitor.visit(tree);

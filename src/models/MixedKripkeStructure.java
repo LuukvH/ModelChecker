@@ -1,11 +1,14 @@
 package models;
 
-import MuCalculus.AlternationDepth;
 import MuCalculus.MuCalculusLexer;
 import MuCalculus.MuCalculusParser;
+import MuCalculus.MuCalculusVisitor;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
+import smart.DependencyGraph;
+import smart.RecursionVariable;
+import smart.SmartModelChecking;
 
 import java.util.*;
 
@@ -19,6 +22,7 @@ public class MixedKripkeStructure {
 
     public Set<String> Labels = new HashSet<String>();
     public Map<String, Map<Integer, BitSet>> labelmap = new HashMap<String, Map<Integer, BitSet>>(); // label, end, startstates
+
     //public Map<Integer, Map<String, Set<Integer>>> transitionmap = new HashMap<Integer, Map<String, Set<Integer>>>();
 
     public MixedKripkeStructure(Aldebaran aldebaranStructure) {
@@ -70,17 +74,36 @@ public class MixedKripkeStructure {
         AlternationDepth alternationDepth = new AlternationDepth();
         System.out.println(String.format("Evaluate: %s, AD: %d", formula, alternationDepth.visit(tree).getDepth()));
 
-        NaiveModelChecking modelChecking = new NaiveModelChecking(this);
 
-        long startTime = System.nanoTime();
+        MuCalculusVisitor<BitSet> modelChecking;
+        long startTime = 0;
+        long endTime = 0;
+        long duration = 0;
+
+        modelChecking = new NaiveModelChecking(this);
+        startTime = System.nanoTime();
         BitSet result = modelChecking.visit(tree);
-        
-        long endTime = System.nanoTime();
-        long duration = (endTime - startTime);
-        System.out.println(String.format("Evaluation time: %f ms", duration/(float)1000000));
+        endTime = System.nanoTime();
+        duration = (endTime - startTime);
+        System.out.println(String.format("Naive Evaluation time: %f ms", duration/(float)1000000));
+        System.out.println(result.toString());
 
+        startTime = System.nanoTime();
+        // Create dependency graph
+        System.out.println("Generate dependency graph.");
+        DependencyGraph dg = new DependencyGraph(this.StateSize());
+        dg.visit(tree);
+        Map<String, RecursionVariable> recursionVariableMap = dg.recursionVariableMap;
+        SmartModelChecking smartModelChecking = new SmartModelChecking(this, recursionVariableMap);
+        result = smartModelChecking.visit(tree);
+        endTime = System.nanoTime();
+        duration = (endTime - startTime);
+        System.out.println(String.format("Smart Evaluation time: %f ms", duration/(float)1000000));
+        System.out.println(result.toString());
 
         return result;
+
+
     }
 
 

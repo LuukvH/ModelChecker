@@ -1,41 +1,68 @@
-package models;
+package smart;
 
 import MuCalculus.MuCalculusParser;
 import MuCalculus.MuCalculusVisitor;
 import models.MixedKripkeStructure;
-import org.antlr.v4.codegen.model.TestSetInline;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
+import smart.RecursionVariable;
 
 import java.util.*;
 
-public class NaiveModelChecking extends AbstractParseTreeVisitor<BitSet> implements MuCalculusVisitor<BitSet> {
+public class SmartModelChecking extends AbstractParseTreeVisitor<BitSet> implements MuCalculusVisitor<BitSet> {
 
 	private MixedKripkeStructure mixedKripkeStructure;
-	private Map<String, BitSet> fixpoint = new HashMap<String, BitSet>();
+	private Map<String, RecursionVariable> recursionVariableMap = new HashMap<>();
 
-	public NaiveModelChecking(MixedKripkeStructure mixedKripkeStructure) {
+	public SmartModelChecking(MixedKripkeStructure mixedKripkeStructure, Map<String, RecursionVariable> recursionVariableMap ) {
 		this.mixedKripkeStructure = mixedKripkeStructure;
+		this.recursionVariableMap = recursionVariableMap;
 	}
 
 	@Override public BitSet visitFormulae(MuCalculusParser.FormulaeContext ctx) {
-		return visitChildren(ctx);
+		if (ctx.changed) {
+			BitSet s = visitChildren(ctx);
+			ctx.value = (BitSet) s.clone();
+			ctx.changed = false;
+			return s;
+		} else {
+			return (BitSet)ctx.value.clone();
+		}
 	}
 
 	@Override public BitSet visitConjunction(MuCalculusParser.ConjunctionContext ctx) {
-		BitSet s = visit(ctx.left());
-		s.and(visit(ctx.right()));
-		return s;
+		if (ctx.changed) {
+			BitSet s = visit(ctx.left());
+			s.and(visit(ctx.right()));
+			ctx.value = (BitSet) s.clone();
+			ctx.changed = false;
+			return s;
+		} else {
+			return (BitSet)ctx.value.clone();
+		}
 	}
 
 	@Override public BitSet visitDisjunction(MuCalculusParser.DisjunctionContext ctx) {
-		BitSet s = visit(ctx.left());
-		s.or(visit(ctx.right()));
-		return s;
+		if (ctx.changed) {
+			BitSet s = visit(ctx.left());
+			s.or(visit(ctx.right()));
+			ctx.value = (BitSet) s.clone();
+			ctx.changed = false;
+			return s;
+		} else {
+			return (BitSet)ctx.value.clone();
+		}
 	}
 
 	@Override public BitSet visitDiamond(MuCalculusParser.DiamondContext ctx) {
-		String label = ctx.label().getText();
-		return diamond(label, visit(ctx.formulae()));
+		if (ctx.changed) {
+			String label = ctx.label().getText();
+			BitSet s = diamond(label, visit(ctx.formulae()));
+			ctx.value = (BitSet) s.clone();
+			ctx.changed = false;
+			return s;
+		} else {
+			return (BitSet)ctx.value.clone();
+		}
 	}
 
 	private BitSet diamond(String label, BitSet bs) {
@@ -58,38 +85,55 @@ public class NaiveModelChecking extends AbstractParseTreeVisitor<BitSet> impleme
 	}
 
 	@Override public BitSet visitBox(MuCalculusParser.BoxContext ctx) {
-		String label = ctx.label().getText();
-		return not(diamond(label, not(visit(ctx.formulae()))));
+		if (ctx.changed) {
+			String label = ctx.label().getText();
+			BitSet s = not(diamond(label, not(visit(ctx.formulae()))));
+			ctx.value = (BitSet) s.clone();
+			ctx.changed = false;
+			return s;
+		} else {
+			return (BitSet)ctx.value.clone();
+		}
 	}
 
 	@Override public BitSet visitLeastfixpoint(MuCalculusParser.LeastfixpointContext ctx) {
-		String variable = ctx.startrecursion().getText();
-		BitSet s = new BitSet(mixedKripkeStructure.StateSize());
-		fixpoint.put(variable, s);
-		BitSet nstates = visit(ctx.formulae());
+		if (ctx.changed) {
+			String variable = ctx.startrecursion().getText();
+			BitSet s = new BitSet(mixedKripkeStructure.StateSize());
+			recursionVariableMap.get(variable).setValue(s);
+			BitSet nstates = visit(ctx.formulae());
 
-		while (!s.equals(nstates)) {
-			s.or(nstates);
-			fixpoint.put(variable, s);
-			nstates = visit(ctx.formulae());
+			while (!s.equals(nstates)) {
+				s.or(nstates);
+				recursionVariableMap.get(variable).setValue(s);
+				nstates = visit(ctx.formulae());
+			}
+			ctx.value = (BitSet) s.clone();
+			ctx.changed = false;
+			return s;
+		} else {
+			return (BitSet)ctx.value.clone();
 		}
-		return s;
 	}
 
 	@Override public BitSet visitGreatestfixpoint(MuCalculusParser.GreatestfixpointContext ctx) {
+		if (ctx.changed) {
 		String variable = ctx.startrecursion().getText();
 		BitSet s = (BitSet)mixedKripkeStructure.States.clone();
-		fixpoint.put(variable, s);
+			recursionVariableMap.get(variable).setValue(s);
 		BitSet nstates = visit(ctx.formulae());
-
-
 
 		while (!s.equals(nstates)) {
 			s.and(nstates);
-			fixpoint.put(variable, s);
+			recursionVariableMap.get(variable).setValue(s);
 			nstates = visit(ctx.formulae());
 		}
-		return s;
+			ctx.value = (BitSet) s.clone();
+			ctx.changed = false;
+			return s;
+		} else {
+			return (BitSet)ctx.value.clone();
+		}
 	}
 
 	@Override public BitSet visitLeft(MuCalculusParser.LeftContext ctx) {
@@ -120,7 +164,7 @@ public class NaiveModelChecking extends AbstractParseTreeVisitor<BitSet> impleme
 
 	@Override public  BitSet visitEndrecursion(MuCalculusParser.EndrecursionContext ctx) {
 		BitSet s = new BitSet(mixedKripkeStructure.StateSize());
-		BitSet f = fixpoint.get(ctx.getText());
+		BitSet f = recursionVariableMap.get(ctx.getText()).getValue();
 		if (f!=null) {
 			s.or(f);
 		}
