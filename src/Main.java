@@ -3,7 +3,7 @@ import models.Aldebaran;
 import models.MixedKripkeStructure;
 
 import java.io.IOException;
-import java.util.Set;
+import java.util.*;
 
 public class Main {
 
@@ -18,9 +18,10 @@ public class Main {
         MixedKripkeStructure mixedKripkeStructure = new MixedKripkeStructure(aldebaranStructure);
 
         //String formula = "mu D. nu A .(mu B . (D || (A || B)) && mu D . true)";
-        String formula = "([tau] Y || [a]true)";
-        Set<Integer> result = mixedKripkeStructure.Evaluate(formula);
-        print(result);
+        String formula = "<a>true";
+        BitSet result = mixedKripkeStructure.Evaluate(formula);
+
+        System.out.println(result.toString());
 
         //MuCalculusBaseVisitor visitor = new MuCalculusBaseVisitor();
         //visitor.visit(tree);
@@ -37,7 +38,4 @@ public class Main {
     */
     }
 
-    private static void print(Set<Integer> states) {
-        System.out.println(states.toString());
-    }
 }

@@ -4,6 +4,7 @@ import models.MixedKripkeStructure;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.BitSet;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,40 +31,40 @@ public class Fixpoint {
     @Test
     public void Expression1() throws Exception {
         String formula = "nu X. X";
-        Set<Integer> result = mixedKripkeStructure.Evaluate(formula);
-        Set<Integer> expected_result = mixedKripkeStructure.States;
+        BitSet result = mixedKripkeStructure.Evaluate(formula);
+        BitSet expected_result = mixedKripkeStructure.States;
         assertEquals(expected_result, result);
     }
 
     @Test
     public void Expression2() throws Exception {
         String formula = "mu Y. Y";
-        Set<Integer> result = mixedKripkeStructure.Evaluate(formula);
-        Set<Integer> expected_result = new HashSet<>();
+        BitSet result = mixedKripkeStructure.Evaluate(formula);
+        BitSet expected_result = new BitSet(mixedKripkeStructure.StateSize());
         assertEquals(expected_result, result);
     }
 
     @Test
     public void Expression3() throws Exception {
         String formula = "nu X. mu Y. (X || Y)";
-        Set<Integer> result = mixedKripkeStructure.Evaluate(formula);
-        Set<Integer> expected_result = mixedKripkeStructure.States;
+        BitSet result = mixedKripkeStructure.Evaluate(formula);
+        BitSet expected_result = mixedKripkeStructure.States;
         assertEquals(expected_result, result);
     }
 
     @Test
     public void Expression4() throws Exception {
         String formula = "nu X. mu Y. (X && Y)";
-        Set<Integer> result = mixedKripkeStructure.Evaluate(formula);
-        Set<Integer> expected_result = new HashSet<>();
+        BitSet result = mixedKripkeStructure.Evaluate(formula);
+        BitSet expected_result = new BitSet(mixedKripkeStructure.StateSize());
         assertEquals(expected_result, result);
     }
 
     @Test
     public void Expression5() throws Exception {
         String formula = "nu X. (X &&  mu Y. Y)";
-        Set<Integer> result = mixedKripkeStructure.Evaluate(formula);
-        Set<Integer> expected_result = new HashSet<>();
+        BitSet result = mixedKripkeStructure.Evaluate(formula);
+        BitSet expected_result = new BitSet(mixedKripkeStructure.StateSize());
         assertEquals(expected_result, result);
     }
 }
