@@ -2,10 +2,12 @@ package models;
 
 import MuCalculus.MuCalculusParser;
 import MuCalculus.MuCalculusVisitor;
-import models.MixedKripkeStructure;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class ModelChecking extends AbstractParseTreeVisitor<Set<Integer>> implements MuCalculusVisitor<Set<Integer>> {
 
@@ -49,7 +51,7 @@ public class ModelChecking extends AbstractParseTreeVisitor<Set<Integer>> implem
 		return states;
 	}
 
-	private Set<Integer> box(String label, Set<Integer> s) {
+	private Set<Integer> diamond(String label, Set<Integer> s) {
 		Set<Integer> states = new HashSet<Integer>();
 
 		for (Integer t : s) {
@@ -59,8 +61,8 @@ public class ModelChecking extends AbstractParseTreeVisitor<Set<Integer>> implem
 		return states;
 	}
 
-	private Set<Integer> diamond(String label, Set<Integer> s) {
-		return not(box(label, not(s)));
+	private Set<Integer> box(String label, Set<Integer> s) {
+		return not(diamond(label, not(s)));
 	}
 
 	@Override public Set<Integer> visitBox(MuCalculusParser.BoxContext ctx) {

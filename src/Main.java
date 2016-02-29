@@ -18,7 +18,8 @@ public class Main {
         MixedKripkeStructure mixedKripkeStructure = new MixedKripkeStructure(aldebaranStructure);
 
         //String formula = "mu D. nu A .(mu B . (D || (A || B)) && mu D . true)";
-        String formula = "([tau] Y || [a]true)";
+        //String formula = "[a]true";
+        String formula = "mu X. (<a>X || <b>true) ";
         Set<Integer> result = mixedKripkeStructure.Evaluate(formula);
         print(result);
 
