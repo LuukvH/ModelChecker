@@ -1,13 +1,14 @@
 package models;
 
-import MuCalculus.AlternationDepth;
 import MuCalculus.MuCalculusLexer;
 import MuCalculus.MuCalculusParser;
-import models.Aldebaran;
-import models.Transition;
+import MuCalculus.MuCalculusVisitor;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
+import smart.DependencyGraph;
+import smart.RecursionVariable;
+import smart.SmartModelChecking;
 
 import java.util.*;
 
@@ -16,94 +17,95 @@ import java.util.*;
  */
 public class MixedKripkeStructure {
 
-    public Set<Integer> States = new HashSet<Integer>();
+    private int nr_of_states = 0;
+    public BitSet States;
+
     public Set<String> Labels = new HashSet<String>();
-    public Map<Integer, Map<String, Set<Integer>>> transitionmap = new HashMap<Integer, Map<String, Set<Integer>>>();
-    private Map<String, Map<Integer, Set<Integer>>> labelmap = new HashMap<String, Map<Integer, Set<Integer>>>(); // label, end, startstates
+    public Map<String, Map<Integer, BitSet>> labelmap = new HashMap<String, Map<Integer, BitSet>>(); // label, end, startstates
+
+    //public Map<Integer, Map<String, Set<Integer>>> transitionmap = new HashMap<Integer, Map<String, Set<Integer>>>();
 
     public MixedKripkeStructure(Aldebaran aldebaranStructure) {
         for(Transition transition : aldebaranStructure.transitions) {
-            States.add(transition.getStartState());
-            States.add(transition.getEndState());
             Labels.add(transition.getLabel());
         }
 
-        BuildTransitionMap(aldebaranStructure.transitions);
+        // Todo normalize bits if states do not start at 0
+        States = new BitSet(aldebaranStructure.getNrOfStates());
+        States.set(0, aldebaranStructure.getNrOfStates(), true);
+
         BuildLabelMap(aldebaranStructure.transitions);
     }
 
-    public Set<Integer> Find(String label, Integer end) {
-        Map<Integer, Set<Integer>> m = labelmap.get(label);
-        if (m!=null) {
-            Set s = m.get(end);
-            if (s!=null) {
-                return s;
-            }
-        }
-        return new HashSet<Integer>();
+    public int StateSize() {
+        return nr_of_states;
     }
 
     private void BuildLabelMap(Set<Transition> transitions) {
+
         for(Transition t : transitions) {
             Integer start = t.getStartState();
             Integer end = t.getEndState();
             String label = t.getLabel();
 
-            Map<Integer, Set<Integer>> m = labelmap.get(label);
+            Map<Integer, BitSet> m = labelmap.get(label);
             if (m == null) {
-                m = new HashMap<Integer, Set<Integer>>();
+                m = new HashMap<Integer, BitSet>();
                 labelmap.put(label, m);
             }
 
-            Set<Integer> s = m.get(end);
+            BitSet s = m.get(end);
             if (s == null) {
-                s = new HashSet<Integer>();
+                s = new BitSet();
                 m.put(end, s);
             }
 
-            s.add(start);
+            s.set(start);
         }
     }
 
-    private void BuildTransitionMap(Set<Transition> transitions) {
-        for(Transition t : transitions) {
-            Integer start = t.getStartState();
-            Integer end = t.getEndState();
-            String label = t.getLabel();
-
-            Map<String, Set<Integer>> m = transitionmap.get(start);
-            if (m == null) {
-                m = new HashMap<String, Set<Integer>>();
-                transitionmap.put(start, m);
-            }
-
-            Set<Integer> s = m.get(label);
-            if (s == null) {
-                s = new HashSet<Integer>();
-                m.put(label, s);
-            }
-
-            s.add(end);
-        }
-    }
-
-    public Set<Integer> Evaluate (String formula) {
+    public BitSet Evaluate (String formula) {
         MuCalculusLexer lexer = new MuCalculusLexer(new ANTLRInputStream(formula));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         MuCalculusParser parser = new MuCalculusParser(tokens);
         ParseTree tree = parser.formulae();
 
         // Formula
-        System.out.println(String.format("Evaluate: %s", formula));
-
-        // Calculate alternation depth
         AlternationDepth alternationDepth = new AlternationDepth();
-        System.out.println(String.format("Alternation depth: %d", alternationDepth.visit(tree).getDepth()));
+        System.out.println(String.format("Evaluate: %s, AD: %d", formula, alternationDepth.visit(tree).getDepth()));
 
-        ModelChecking modelChecking = new ModelChecking(this);
-        Set<Integer> result = modelChecking.visit(tree);
+
+        MuCalculusVisitor<BitSet> modelChecking;
+        long startTime = 0;
+        long endTime = 0;
+        long duration = 0;
+
+        modelChecking = new NaiveModelChecking(this);
+        startTime = System.nanoTime();
+        BitSet result = modelChecking.visit(tree);
+        endTime = System.nanoTime();
+        duration = (endTime - startTime);
+        System.out.println(String.format("Naive Evaluation time: %f ms", duration/(float)1000000));
+        System.out.println(result.toString());
+
+        startTime = System.nanoTime();
+        // Create dependency graph
+        System.out.println("Generate dependency graph.");
+        DependencyGraph dg = new DependencyGraph(this.StateSize());
+        dg.visit(tree);
+        Map<String, RecursionVariable> recursionVariableMap = dg.recursionVariableMap;
+        SmartModelChecking smartModelChecking = new SmartModelChecking(this, recursionVariableMap);
+        result = smartModelChecking.visit(tree);
+        endTime = System.nanoTime();
+        duration = (endTime - startTime);
+        System.out.println(String.format("Smart Evaluation time: %f ms", duration/(float)1000000));
+        System.out.println(result.toString());
 
         return result;
+
+
     }
+
+
 
 }

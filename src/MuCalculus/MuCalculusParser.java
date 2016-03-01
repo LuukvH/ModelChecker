@@ -1,4 +1,5 @@
 package MuCalculus;// Generated from C:/Users/laj/Documents/GitHub/ModelChecker\MuCalculus.g4 by ANTLR 4.5.1
+import ObserverPattern.Observer;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -83,7 +84,7 @@ public class MuCalculusParser extends Parser {
 		super(input);
 		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
-	public static class FormulaeContext extends ParserRuleContext {
+	public static class FormulaeContext extends MuCalculusNodeContext {
 		public MfalseContext mfalse() {
 			return getRuleContext(MfalseContext.class,0);
 		}
@@ -212,7 +213,7 @@ public class MuCalculusParser extends Parser {
 		return _localctx;
 	}
 
-	public static class ConjunctionContext extends ParserRuleContext {
+	public static class ConjunctionContext extends MuCalculusNodeContext implements Observer{
 		public LeftContext left() {
 			return getRuleContext(LeftContext.class,0);
 		}
@@ -235,6 +236,11 @@ public class MuCalculusParser extends Parser {
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MuCalculusVisitor ) return ((MuCalculusVisitor<? extends T>)visitor).visitConjunction(this);
 			else return visitor.visitChildren(this);
+		}
+
+		@Override
+		public void update() {
+			changed = true;
 		}
 	}
 
@@ -267,7 +273,7 @@ public class MuCalculusParser extends Parser {
 		return _localctx;
 	}
 
-	public static class DisjunctionContext extends ParserRuleContext {
+	public static class DisjunctionContext extends MuCalculusNodeContext implements Observer {
 		public LeftContext left() {
 			return getRuleContext(LeftContext.class,0);
 		}
@@ -290,6 +296,11 @@ public class MuCalculusParser extends Parser {
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MuCalculusVisitor ) return ((MuCalculusVisitor<? extends T>)visitor).visitDisjunction(this);
 			else return visitor.visitChildren(this);
+		}
+
+		@Override
+		public void update() {
+			changed = true;
 		}
 	}
 
@@ -322,7 +333,7 @@ public class MuCalculusParser extends Parser {
 		return _localctx;
 	}
 
-	public static class DiamondContext extends ParserRuleContext {
+	public static class DiamondContext extends MuCalculusNodeContext implements Observer {
 		public LabelContext label() {
 			return getRuleContext(LabelContext.class,0);
 		}
@@ -345,6 +356,11 @@ public class MuCalculusParser extends Parser {
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MuCalculusVisitor ) return ((MuCalculusVisitor<? extends T>)visitor).visitDiamond(this);
 			else return visitor.visitChildren(this);
+		}
+
+		@Override
+		public void update() {
+			changed = true;
 		}
 	}
 
@@ -375,7 +391,7 @@ public class MuCalculusParser extends Parser {
 		return _localctx;
 	}
 
-	public static class BoxContext extends ParserRuleContext {
+	public static class BoxContext extends MuCalculusNodeContext implements Observer {
 		public LabelContext label() {
 			return getRuleContext(LabelContext.class,0);
 		}
@@ -398,6 +414,11 @@ public class MuCalculusParser extends Parser {
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MuCalculusVisitor ) return ((MuCalculusVisitor<? extends T>)visitor).visitBox(this);
 			else return visitor.visitChildren(this);
+		}
+
+		@Override
+		public void update() {
+			changed = true;
 		}
 	}
 
@@ -428,7 +449,7 @@ public class MuCalculusParser extends Parser {
 		return _localctx;
 	}
 
-	public static class LeastfixpointContext extends ParserRuleContext {
+	public static class LeastfixpointContext extends MuCalculusNodeContext implements Observer{
 		public StartrecursionContext startrecursion() {
 			return getRuleContext(StartrecursionContext.class,0);
 		}
@@ -451,6 +472,11 @@ public class MuCalculusParser extends Parser {
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MuCalculusVisitor ) return ((MuCalculusVisitor<? extends T>)visitor).visitLeastfixpoint(this);
 			else return visitor.visitChildren(this);
+		}
+
+		@Override
+		public void update() {
+			changed = true;
 		}
 	}
 
@@ -481,7 +507,7 @@ public class MuCalculusParser extends Parser {
 		return _localctx;
 	}
 
-	public static class GreatestfixpointContext extends ParserRuleContext {
+	public static class GreatestfixpointContext extends MuCalculusNodeContext implements Observer{
 		public StartrecursionContext startrecursion() {
 			return getRuleContext(StartrecursionContext.class,0);
 		}
@@ -504,6 +530,11 @@ public class MuCalculusParser extends Parser {
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof MuCalculusVisitor ) return ((MuCalculusVisitor<? extends T>)visitor).visitGreatestfixpoint(this);
 			else return visitor.visitChildren(this);
+		}
+
+		@Override
+		public void update() {
+			changed = true;
 		}
 	}
 
@@ -534,7 +565,7 @@ public class MuCalculusParser extends Parser {
 		return _localctx;
 	}
 
-	public static class LeftContext extends ParserRuleContext {
+	public static class LeftContext extends MuCalculusNodeContext {
 		public FormulaeContext formulae() {
 			return getRuleContext(FormulaeContext.class,0);
 		}
@@ -578,7 +609,7 @@ public class MuCalculusParser extends Parser {
 		return _localctx;
 	}
 
-	public static class RightContext extends ParserRuleContext {
+	public static class RightContext extends MuCalculusNodeContext {
 		public FormulaeContext formulae() {
 			return getRuleContext(FormulaeContext.class,0);
 		}
@@ -622,7 +653,7 @@ public class MuCalculusParser extends Parser {
 		return _localctx;
 	}
 
-	public static class LabelContext extends ParserRuleContext {
+	public static class LabelContext extends MuCalculusNodeContext {
 		public TerminalNode STRING() { return getToken(MuCalculusParser.STRING, 0); }
 		public LabelContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -664,7 +695,7 @@ public class MuCalculusParser extends Parser {
 		return _localctx;
 	}
 
-	public static class MfalseContext extends ParserRuleContext {
+	public static class MfalseContext extends MuCalculusNodeContext {
 		public TerminalNode FALSE() { return getToken(MuCalculusParser.FALSE, 0); }
 		public MfalseContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -706,7 +737,7 @@ public class MuCalculusParser extends Parser {
 		return _localctx;
 	}
 
-	public static class MtrueContext extends ParserRuleContext {
+	public static class MtrueContext extends MuCalculusNodeContext {
 		public TerminalNode TRUE() { return getToken(MuCalculusParser.TRUE, 0); }
 		public MtrueContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -748,7 +779,7 @@ public class MuCalculusParser extends Parser {
 		return _localctx;
 	}
 
-	public static class StartrecursionContext extends ParserRuleContext {
+	public static class StartrecursionContext extends MuCalculusNodeContext{
 		public TerminalNode RECURSIONVARIABLE() { return getToken(MuCalculusParser.RECURSIONVARIABLE, 0); }
 		public StartrecursionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -790,7 +821,7 @@ public class MuCalculusParser extends Parser {
 		return _localctx;
 	}
 
-	public static class EndrecursionContext extends ParserRuleContext {
+	public static class EndrecursionContext extends MuCalculusNodeContext{
 		public TerminalNode RECURSIONVARIABLE() { return getToken(MuCalculusParser.RECURSIONVARIABLE, 0); }
 		public EndrecursionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
