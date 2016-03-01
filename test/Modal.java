@@ -1,4 +1,5 @@
 import aldebran.AldebaranReader;
+import enums.Algorithm;
 import models.Aldebaran;
 import models.MixedKripkeStructure;
 import org.junit.Before;
@@ -16,6 +17,7 @@ import static org.junit.Assert.assertEquals;
 public class Modal {
 
     MixedKripkeStructure mixedKripkeStructure;
+    Algorithm algo;
 
     @Before
     public void setUp() throws Exception {
@@ -26,12 +28,13 @@ public class Modal {
             return;
 
         mixedKripkeStructure = new MixedKripkeStructure(aldebaranStructure);
+        algo = Algorithm.Naive;
     }
 
     @Test
     public void Expression1() throws Exception {
         String formula = "[tau]true";
-        BitSet result = mixedKripkeStructure.Evaluate(formula);
+        BitSet result = mixedKripkeStructure.Evaluate(formula, algo);
         BitSet expected_result = new BitSet(mixedKripkeStructure.StateSize());
         expected_result.set(0);
         expected_result.set(1);
@@ -44,7 +47,7 @@ public class Modal {
     @Test
     public void Expression2() throws Exception {
         String formula = "<tau>[tau]true";
-        BitSet result = mixedKripkeStructure.Evaluate(formula);
+        BitSet result = mixedKripkeStructure.Evaluate(formula, algo);
         BitSet expected_result = new BitSet(mixedKripkeStructure.StateSize());
         expected_result.set(0);
         expected_result.set(3);
@@ -57,7 +60,7 @@ public class Modal {
     @Test
     public void Expression3() throws Exception {
         String formula = "[tau]false";
-        BitSet result = mixedKripkeStructure.Evaluate(formula);
+        BitSet result = mixedKripkeStructure.Evaluate(formula, algo);
         BitSet expected_result = new BitSet(mixedKripkeStructure.StateSize());
         assertEquals(expected_result, result);
     }
@@ -65,7 +68,7 @@ public class Modal {
     @Test
     public void Expression4() throws Exception {
         String formula = "<tau>[tau]false";
-        BitSet result = mixedKripkeStructure.Evaluate(formula);
+        BitSet result = mixedKripkeStructure.Evaluate(formula, algo);
         BitSet expected_result = new BitSet(mixedKripkeStructure.StateSize());
         expected_result.set(3);
         expected_result.set(5);
@@ -76,7 +79,7 @@ public class Modal {
     @Test
     public void Expression5() throws Exception {
         String formula = "<tau>false";
-        BitSet result = mixedKripkeStructure.Evaluate(formula);
+        BitSet result = mixedKripkeStructure.Evaluate(formula, algo);
         BitSet expected_result = new BitSet(mixedKripkeStructure.StateSize());
         assertEquals(expected_result, result);
     }

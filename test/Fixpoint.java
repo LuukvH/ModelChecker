@@ -1,4 +1,5 @@
 import aldebran.AldebaranReader;
+import enums.Algorithm;
 import models.Aldebaran;
 import models.MixedKripkeStructure;
 import org.junit.Before;
@@ -16,6 +17,7 @@ import static org.junit.Assert.assertEquals;
 public class Fixpoint {
 
     MixedKripkeStructure mixedKripkeStructure;
+    Algorithm algo;
 
     @Before
     public void setUp() throws Exception {
@@ -26,12 +28,13 @@ public class Fixpoint {
             return;
 
         mixedKripkeStructure = new MixedKripkeStructure(aldebaranStructure);
+        algo = Algorithm.Naive;
     }
 
     @Test
     public void Expression1() throws Exception {
         String formula = "nu X. X";
-        BitSet result = mixedKripkeStructure.Evaluate(formula);
+        BitSet result = mixedKripkeStructure.Evaluate(formula, algo);
         BitSet expected_result = mixedKripkeStructure.States;
         assertEquals(expected_result, result);
     }
@@ -39,7 +42,7 @@ public class Fixpoint {
     @Test
     public void Expression2() throws Exception {
         String formula = "mu Y. Y";
-        BitSet result = mixedKripkeStructure.Evaluate(formula);
+        BitSet result = mixedKripkeStructure.Evaluate(formula, algo);
         BitSet expected_result = new BitSet(mixedKripkeStructure.StateSize());
         assertEquals(expected_result, result);
     }
@@ -47,7 +50,7 @@ public class Fixpoint {
     @Test
     public void Expression3() throws Exception {
         String formula = "nu X. mu Y. (X || Y)";
-        BitSet result = mixedKripkeStructure.Evaluate(formula);
+        BitSet result = mixedKripkeStructure.Evaluate(formula, algo);
         BitSet expected_result = mixedKripkeStructure.States;
         assertEquals(expected_result, result);
     }
@@ -55,7 +58,7 @@ public class Fixpoint {
     @Test
     public void Expression4() throws Exception {
         String formula = "nu X. mu Y. (X && Y)";
-        BitSet result = mixedKripkeStructure.Evaluate(formula);
+        BitSet result = mixedKripkeStructure.Evaluate(formula, algo);
         BitSet expected_result = new BitSet(mixedKripkeStructure.StateSize());
         assertEquals(expected_result, result);
     }
@@ -63,7 +66,7 @@ public class Fixpoint {
     @Test
     public void Expression5() throws Exception {
         String formula = "nu X. (X &&  mu Y. Y)";
-        BitSet result = mixedKripkeStructure.Evaluate(formula);
+        BitSet result = mixedKripkeStructure.Evaluate(formula, algo);
         BitSet expected_result = new BitSet(mixedKripkeStructure.StateSize());
         assertEquals(expected_result, result);
     }

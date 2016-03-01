@@ -1,4 +1,5 @@
 import aldebran.AldebaranReader;
+import enums.Algorithm;
 import models.Aldebaran;
 import models.MixedKripkeStructure;
 
@@ -10,7 +11,8 @@ public class Main {
     public static void main(String[] args) throws IOException {
 
         AldebaranReader reader = new AldebaranReader();
-        Aldebaran aldebaranStructure = reader.ReadFile("res/test.aut");
+        //Aldebaran aldebaranStructure = reader.ReadFile("res/test.aut");
+        Aldebaran aldebaranStructure = reader.ReadFile("res/demanding_children_10.aut");
 
         if (aldebaranStructure == null)
             return;
@@ -18,7 +20,7 @@ public class Main {
         MixedKripkeStructure mixedKripkeStructure = new MixedKripkeStructure(aldebaranStructure);
 
         String formula = "mu D. nu A .(mu B . (D || (A || B)) && mu D . true)";
-        BitSet result = mixedKripkeStructure.Evaluate(formula);
+        BitSet result = mixedKripkeStructure.Evaluate(formula, Algorithm.Naive);
         System.out.println(result.toString());
 
     }
