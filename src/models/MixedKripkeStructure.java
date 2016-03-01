@@ -90,6 +90,16 @@ public class MixedKripkeStructure {
             System.out.println(String.format("Naive Evaluation time: %f ms", duration / (float) 1000000));
         }
 
+        if (algo == Algorithm.EmersonAndLei) {
+            MuCalculusVisitor<BitSet> modelChecking;
+            modelChecking = new EmersonLeiModelChecking(this);
+            startTime = System.nanoTime();
+            result = modelChecking.visit(tree);
+            endTime = System.nanoTime();
+            duration = (endTime - startTime);
+            System.out.println(String.format("Emerson & Lei Evaluation time: %f ms", duration / (float) 1000000));
+        }
+
         if (algo == Algorithm.Smart) {
             startTime = System.nanoTime();
             // Create dependency graph

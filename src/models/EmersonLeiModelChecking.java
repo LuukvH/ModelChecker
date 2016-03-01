@@ -2,18 +2,18 @@ package models;
 
 import MuCalculus.MuCalculusParser;
 import MuCalculus.MuCalculusVisitor;
-import models.MixedKripkeStructure;
-import org.antlr.v4.codegen.model.TestSetInline;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
-import java.util.*;
+import java.util.BitSet;
+import java.util.HashMap;
+import java.util.Map;
 
-public class NaiveModelChecking extends AbstractParseTreeVisitor<BitSet> implements MuCalculusVisitor<BitSet> {
+public class EmersonLeiModelChecking extends AbstractParseTreeVisitor<BitSet> implements MuCalculusVisitor<BitSet> {
 
 	private MixedKripkeStructure mixedKripkeStructure;
 	private Map<String, BitSet> fixpoint = new HashMap<String, BitSet>();
 
-	public NaiveModelChecking(MixedKripkeStructure mixedKripkeStructure) {
+	public EmersonLeiModelChecking(MixedKripkeStructure mixedKripkeStructure) {
 		this.mixedKripkeStructure = mixedKripkeStructure;
 	}
 

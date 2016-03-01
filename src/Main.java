@@ -23,6 +23,12 @@ public class Main {
         BitSet result = mixedKripkeStructure.Evaluate(formula, Algorithm.Naive);
         System.out.println(result.toString());
 
+        result = mixedKripkeStructure.Evaluate(formula, Algorithm.Smart);
+        System.out.println(result.toString());
+
+        result = mixedKripkeStructure.Evaluate(formula, Algorithm.EmersonAndLei);
+        System.out.println(result.toString());
+
     }
 
 }
