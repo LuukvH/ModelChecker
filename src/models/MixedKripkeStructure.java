@@ -80,7 +80,7 @@ public class MixedKripkeStructure {
         long duration = 0;
         BitSet result = null;
 
-        if (algo == Algorithm.Naive) {
+        if (algo == Algorithm.Naive || algo == Algorithm.All) {
             MuCalculusVisitor<BitSet> modelChecking;
             modelChecking = new NaiveModelChecking(this);
             startTime = System.nanoTime();
@@ -88,9 +88,10 @@ public class MixedKripkeStructure {
             endTime = System.nanoTime();
             duration = (endTime - startTime);
             System.out.println(String.format("Naive Evaluation time: %f ms", duration / (float) 1000000));
+            System.out.println(result);
         }
 
-        if (algo == Algorithm.EmersonAndLei) {
+        if (algo == Algorithm.EmersonAndLei || algo == Algorithm.All) {
             MuCalculusVisitor<BitSet> modelChecking;
             modelChecking = new EmersonLeiModelChecking(this);
             startTime = System.nanoTime();
@@ -98,9 +99,10 @@ public class MixedKripkeStructure {
             endTime = System.nanoTime();
             duration = (endTime - startTime);
             System.out.println(String.format("Emerson & Lei Evaluation time: %f ms", duration / (float) 1000000));
+            System.out.println(result);
         }
 
-        if (algo == Algorithm.Smart) {
+        if (algo == Algorithm.Smart || algo == Algorithm.All ) {
             startTime = System.nanoTime();
             // Create dependency graph
             System.out.println("Generate dependency graph.");
@@ -112,6 +114,7 @@ public class MixedKripkeStructure {
             endTime = System.nanoTime();
             duration = (endTime - startTime);
             System.out.println(String.format("Smart Evaluation time: %f ms", duration / (float) 1000000));
+            System.out.println(result);
         }
 
         return result;
