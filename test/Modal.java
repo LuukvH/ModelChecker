@@ -39,8 +39,11 @@ public class Modal {
         expected_result.set(0);
         expected_result.set(1);
         expected_result.set(2);
+        expected_result.set(3);
         expected_result.set(4);
+        expected_result.set(5);
         expected_result.set(6);
+        expected_result.set(7);
         assertEquals(expected_result, result);
     }
 
@@ -50,10 +53,10 @@ public class Modal {
         BitSet result = mixedKripkeStructure.Evaluate(formula, algo);
         BitSet expected_result = new BitSet(mixedKripkeStructure.StateSize());
         expected_result.set(0);
-        expected_result.set(3);
-        expected_result.set(5);
+        expected_result.set(1);
+        expected_result.set(2);
+        expected_result.set(4);
         expected_result.set(6);
-        expected_result.set(7);
         assertEquals(expected_result, result);
     }
 
@@ -62,6 +65,9 @@ public class Modal {
         String formula = "[tau]false";
         BitSet result = mixedKripkeStructure.Evaluate(formula, algo);
         BitSet expected_result = new BitSet(mixedKripkeStructure.StateSize());
+        expected_result.set(3);
+        expected_result.set(5);
+        expected_result.set(7);
         assertEquals(expected_result, result);
     }
 
@@ -70,9 +76,9 @@ public class Modal {
         String formula = "<tau>[tau]false";
         BitSet result = mixedKripkeStructure.Evaluate(formula, algo);
         BitSet expected_result = new BitSet(mixedKripkeStructure.StateSize());
-        expected_result.set(3);
-        expected_result.set(5);
-        expected_result.set(7);
+        expected_result.set(1);
+        expected_result.set(2);
+        expected_result.set(4);
         assertEquals(expected_result, result);
     }
 
