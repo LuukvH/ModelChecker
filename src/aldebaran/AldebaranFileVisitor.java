@@ -1,4 +1,4 @@
-package aldebran;
+package aldebaran;
 
 import models.Aldebaran;
 import models.Transition;

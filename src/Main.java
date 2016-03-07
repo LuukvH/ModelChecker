@@ -1,18 +1,10 @@
-import aldebran.AldebaranReader;
+import aldebaran.AldebaranReader;
 import enums.Algorithm;
 import models.Aldebaran;
 import models.MixedKripkeStructure;
 import models.Result;
 
-import javax.xml.crypto.dsig.keyinfo.KeyValue;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class Main {
 
