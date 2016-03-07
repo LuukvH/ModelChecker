@@ -74,7 +74,6 @@ public class MixedKripkeStructure {
 
         // Formula
         AlternationDepth alternationDepth = new AlternationDepth();
-        System.out.println(String.format("Evaluate: %s, AD: %d", formula, alternationDepth.visit(tree).getDepth()));
 
         long startTime = 0;
         long endTime = 0;
@@ -107,6 +106,8 @@ public class MixedKripkeStructure {
             endTime = System.nanoTime();
             result.duration = (endTime - startTime);
         }
+
+        System.out.printf("Evaluate: %s, AD: %d ", formula, alternationDepth.visit(tree).getDepth());
 
         return result;
     }
