@@ -57,15 +57,16 @@ public class MixedKripkeStructure {
 
             BitSet s = m.get(end);
             if (s == null) {
-                s = new BitSet();
+                s = new BitSet(nr_of_states);
                 m.put(end, s);
             }
 
-            s.set(start);
+            //s.set(start);
+
         }
     }
 
-    public BitSet Evaluate (String formula, Algorithm algo) {
+    public Result Evaluate (String formula, Algorithm algo) {
         MuCalculusLexer lexer = new MuCalculusLexer(new ANTLRInputStream(formula));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         MuCalculusParser parser = new MuCalculusParser(tokens);
@@ -78,31 +79,16 @@ public class MixedKripkeStructure {
         long startTime = 0;
         long endTime = 0;
         long duration = 0;
-        BitSet result = null;
+        Result result = new Result();
 
-        if (algo == Algorithm.Naive || algo == Algorithm.All) {
-            MuCalculusVisitor<BitSet> modelChecking;
-            modelChecking = new NaiveModelChecking(this);
-            startTime = System.nanoTime();
-            result = modelChecking.visit(tree);
-            endTime = System.nanoTime();
-            duration = (endTime - startTime);
-            System.out.println(String.format("Naive Evaluation time: %f ms", duration / (float) 1000000));
-            System.out.println(result);
-        }
-
-        if (algo == Algorithm.EmersonAndLei || algo == Algorithm.All) {
+        if (algo == Algorithm.EmersonAndLei) {
             MuCalculusVisitor<BitSet> modelChecking;
             modelChecking = new EmersonLeiModelChecking(this);
             startTime = System.nanoTime();
-            result = modelChecking.visit(tree);
+            result.answer = modelChecking.visit(tree);
             endTime = System.nanoTime();
-            duration = (endTime - startTime);
-            System.out.println(String.format("Emerson & Lei Evaluation time: %f ms", duration / (float) 1000000));
-            System.out.println(result);
-        }
-
-        if (algo == Algorithm.Smart || algo == Algorithm.All ) {
+            result.duration = (endTime - startTime);
+        } else if (algo == Algorithm.Smart) {
             startTime = System.nanoTime();
             // Create dependency graph
             System.out.println("Generate dependency graph.");
@@ -110,11 +96,16 @@ public class MixedKripkeStructure {
             dg.visit(tree);
             Map<String, RecursionVariable> recursionVariableMap = dg.recursionVariableMap;
             SmartModelChecking smartModelChecking = new SmartModelChecking(this, recursionVariableMap);
-            result = smartModelChecking.visit(tree);
+            result.answer = smartModelChecking.visit(tree);
             endTime = System.nanoTime();
-            duration = (endTime - startTime);
-            System.out.println(String.format("Smart Evaluation time: %f ms", duration / (float) 1000000));
-            System.out.println(result);
+            result.duration = (endTime - startTime);
+        } else {
+            MuCalculusVisitor<BitSet> modelChecking;
+            modelChecking = new NaiveModelChecking(this);
+            startTime = System.nanoTime();
+            result.answer = modelChecking.visit(tree);
+            endTime = System.nanoTime();
+            result.duration = (endTime - startTime);
         }
 
         return result;

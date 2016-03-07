@@ -64,10 +64,14 @@ public class EmersonLeiModelChecking extends AbstractParseTreeVisitor<BitSet> im
 
 	@Override public BitSet visitLeastfixpoint(MuCalculusParser.LeastfixpointContext ctx) {
 		String variable = ctx.startrecursion().getText();
-		BitSet s = new BitSet(mixedKripkeStructure.StateSize());
-		fixpoint.put(variable, s);
-		BitSet nstates = visit(ctx.formulae());
 
+		BitSet s = fixpoint.get(variable);
+		if (s == null) {
+			s = new BitSet(mixedKripkeStructure.StateSize());
+			fixpoint.put(variable, s);
+		}
+
+		BitSet nstates = visit(ctx.formulae());
 		while (!s.equals(nstates)) {
 			s.or(nstates);
 			fixpoint.put(variable, s);
@@ -78,10 +82,14 @@ public class EmersonLeiModelChecking extends AbstractParseTreeVisitor<BitSet> im
 
 	@Override public BitSet visitGreatestfixpoint(MuCalculusParser.GreatestfixpointContext ctx) {
 		String variable = ctx.startrecursion().getText();
-		BitSet s = (BitSet)mixedKripkeStructure.States.clone();
-		fixpoint.put(variable, s);
-		BitSet nstates = visit(ctx.formulae());
 
+		BitSet s = fixpoint.get(variable);
+		if (s == null) {
+			s = (BitSet)mixedKripkeStructure.States.clone();
+			fixpoint.put(variable, s);
+		}
+
+		BitSet nstates = visit(ctx.formulae());
 		while (!s.equals(nstates)) {
 			s.and(nstates);
 			fixpoint.put(variable, s);

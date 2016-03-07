@@ -99,13 +99,17 @@ public class SmartModelChecking extends AbstractParseTreeVisitor<BitSet> impleme
 	@Override public BitSet visitLeastfixpoint(MuCalculusParser.LeastfixpointContext ctx) {
 		if (ctx.changed) {
 			String variable = ctx.startrecursion().getText();
-			BitSet s = new BitSet(mixedKripkeStructure.StateSize());
-			recursionVariableMap.get(variable).setValue(s);
-			BitSet nstates = visit(ctx.formulae());
+			RecursionVariable v = recursionVariableMap.get(variable);
+			BitSet s = v.getValue();
+			if (!v.isSet()) {
+				s = new BitSet(mixedKripkeStructure.StateSize());
+				v.setValue(s);
+			}
 
+			BitSet nstates = visit(ctx.formulae());
 			while (!s.equals(nstates)) {
 				s.or(nstates);
-				recursionVariableMap.get(variable).setValue(s);
+				v.setValue(s);
 				nstates = visit(ctx.formulae());
 			}
 			ctx.value = (BitSet) s.clone();
@@ -119,13 +123,18 @@ public class SmartModelChecking extends AbstractParseTreeVisitor<BitSet> impleme
 	@Override public BitSet visitGreatestfixpoint(MuCalculusParser.GreatestfixpointContext ctx) {
 		if (ctx.changed) {
 		String variable = ctx.startrecursion().getText();
-		BitSet s = (BitSet)mixedKripkeStructure.States.clone();
-			recursionVariableMap.get(variable).setValue(s);
+			RecursionVariable v = recursionVariableMap.get(variable);
+			BitSet s = v.getValue();
+			if (!v.isSet()) {
+				s =  (BitSet)mixedKripkeStructure.States.clone();
+				v.setValue(s);
+			}
+
 		BitSet nstates = visit(ctx.formulae());
 
 		while (!s.equals(nstates)) {
 			s.and(nstates);
-			recursionVariableMap.get(variable).setValue(s);
+			v.setValue(s);
 			nstates = visit(ctx.formulae());
 		}
 			ctx.value = (BitSet) s.clone();

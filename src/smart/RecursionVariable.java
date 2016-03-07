@@ -13,6 +13,10 @@ public class RecursionVariable extends Subject {
     private BitSet value;
     private boolean set = false;
 
+    public boolean isSet() {
+        return set;
+    }
+
     public RecursionVariable(int size) {
         this.size = size;
         value = new BitSet(size);

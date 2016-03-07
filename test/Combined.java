@@ -34,7 +34,7 @@ public class Combined {
     @Test
     public void Expression1() throws Exception {
         String formula = "nu X. (<tau>X && mu Y. (<tau>Y || [a]false))";
-        BitSet result = mixedKripkeStructure.Evaluate(formula, algo);
+        BitSet result = mixedKripkeStructure.Evaluate(formula, algo).answer;
         BitSet expected_result = new BitSet(mixedKripkeStructure.StateSize());
         expected_result.set(0);
         expected_result.set(1);
@@ -47,7 +47,7 @@ public class Combined {
     @Test
     public void Expression2() throws Exception {
         String formula = "nu X. <tau>X";
-        BitSet result = mixedKripkeStructure.Evaluate(formula, algo);
+        BitSet result = mixedKripkeStructure.Evaluate(formula, algo).answer;
         BitSet expected_result = new BitSet(mixedKripkeStructure.StateSize());
         expected_result.set(0);
         expected_result.set(1);
@@ -60,7 +60,7 @@ public class Combined {
     @Test
     public void Expression3() throws Exception {
         String formula = "nu X. mu Y. ( <tau>Y || <a>X)";
-        BitSet result = mixedKripkeStructure.Evaluate(formula, algo);
+        BitSet result = mixedKripkeStructure.Evaluate(formula, algo).answer;
         BitSet expected_result = new BitSet(mixedKripkeStructure.StateSize());
         expected_result.set(0);
         expected_result.set(1);
@@ -75,7 +75,7 @@ public class Combined {
     @Test
     public void Expression4() throws Exception {
         String formula = "nu X. mu Y. ( (<tau>Y || <a>Y) || <b>X)";
-        BitSet result = mixedKripkeStructure.Evaluate(formula, algo);
+        BitSet result = mixedKripkeStructure.Evaluate(formula, algo).answer;
         BitSet expected_result = new BitSet(mixedKripkeStructure.StateSize());
         expected_result.set(0);
         expected_result.set(1);
@@ -91,7 +91,7 @@ public class Combined {
     @Test
     public void Expression5() throws Exception {
         String formula = "mu X. ([tau]X && (<tau>true || <a>true))";
-        BitSet result = mixedKripkeStructure.Evaluate(formula, algo);
+        BitSet result = mixedKripkeStructure.Evaluate(formula, algo).answer;
         BitSet expected_result =  new BitSet(mixedKripkeStructure.StateSize());
         expected_result.set(3);
         expected_result.set(5);
