@@ -61,7 +61,7 @@ public class MixedKripkeStructure {
                 m.put(end, s);
             }
 
-            //s.set(start);
+            s.set(start);
 
         }
     }
