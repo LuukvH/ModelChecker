@@ -2,6 +2,9 @@ import aldebaran.AldebaranReader;
 import enums.Algorithm;
 import models.Aldebaran;
 import models.MixedKripkeStructure;
+import models.Result;
+import org.antlr.v4.runtime.misc.OrderedHashSet;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -18,7 +21,7 @@ public class Main {
 
         Set<File> models = new HashSet<File>();
         Set<String> formulas = new HashSet<String>();
-        Set<Algorithm> algorithms = new HashSet<Algorithm>();
+        Set<Algorithm> algorithms = new OrderedHashSet<>();
 
         /*
         args = new String[6];
@@ -38,19 +41,19 @@ public class Main {
             for (int i = 0; i < args.length - 1; i++) {
                 // Aldebaran file
                 if (args[i] == "-i") {
-                    models.add(new File(args[i+1]));
+                    models.add(new File(args[i + 1]));
                     i++;
                 }
 
                 // Formula
                 if (args[i] == "-f") {
-                    formulas.add(args[i+1]);
+                    formulas.add(args[i + 1]);
                     i++;
                 }
 
                 // Formula
                 if (args[i] == "-m") {
-                    switch(Integer.parseInt(args[i+1])) {
+                    switch (Integer.parseInt(args[i + 1])) {
                         case 1:
                             algorithms.add(Algorithm.Naive);
                             break;
@@ -65,7 +68,7 @@ public class Main {
 
                 if (args[i] == "-t") {
                     performanceTest = true;
-                    folder = args[i+1];
+                    folder = args[i + 1];
                     i++;
                 }
             }
@@ -86,13 +89,13 @@ public class Main {
 
         if (performanceTest) {
             File[] files = FileUtils.getFiles(folder, ".aut");
-            for(File file : files) {
+            for (File file : files) {
                 System.out.println("Model: " + file.toString());
                 models.add(file);
             }
 
             files = FileUtils.getFiles(folder, ".mcf");
-            for(File file : files) {
+            for (File file : files) {
                 System.out.print("Formula: " + file.toString());
 
                 // Read file and find formula
@@ -101,7 +104,7 @@ public class Main {
                     String line = br.readLine();
                     while (line != null) {
                         line.trim();
-                        if (!line.startsWith("%") && line.length() > 0){
+                        if (!line.startsWith("%") && line.length() > 0) {
                             formulas.add(line);
                             System.out.println(" - " + line);
                         }
@@ -112,13 +115,14 @@ public class Main {
                 }
             }
 
+            algorithms.clear();
             algorithms.add(Algorithm.Naive);
             algorithms.add(Algorithm.EmersonAndLei);
             algorithms.add(Algorithm.Smart);
         }
 
 
-        for(File model : models) {
+        for (File model : models) {
 
             Long startTime;
             System.out.printf("Read model: %s", model.toString());
@@ -137,9 +141,13 @@ public class Main {
             MixedKripkeStructure mixedKripkeStructure = new MixedKripkeStructure(aldebaranStructure);
             System.out.printf("(%f ms) \n", (System.nanoTime() - startTime) / (float) 100000);
 
-            // Result result = mixedKripkeStructure.Evaluate(formula, algo);
-            // System.out.printf("(%f ms) \n", result.duration / (float) 100000);
-
+            for (Algorithm algorithm : algorithms) {
+                for (String formula : formulas) {
+                    Result result = mixedKripkeStructure.Evaluate(formula, algorithm);
+                    System.out.println(String.format("Evaluate %s %s, AD: %d (%f ms)", algorithm.toString(), formula, result.AlternationDepth, result.duration / (float) 100000));
+                }
+            }
+            System.out.println();
         }
     }
 }

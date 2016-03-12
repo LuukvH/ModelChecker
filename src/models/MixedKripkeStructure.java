@@ -72,13 +72,14 @@ public class MixedKripkeStructure {
         MuCalculusParser parser = new MuCalculusParser(tokens);
         ParseTree tree = parser.formulae();
 
-        // Formula
-        AlternationDepth alternationDepth = new AlternationDepth();
-
         long startTime = 0;
         long endTime = 0;
         long duration = 0;
         Result result = new Result();
+
+        AlternationDepth alternationDepth = new AlternationDepth();
+        result.AlternationDepth = alternationDepth.visit(tree).getDepth();
+
 
         if (algo == Algorithm.EmersonAndLei) {
             MuCalculusVisitor<BitSet> modelChecking;
@@ -89,8 +90,6 @@ public class MixedKripkeStructure {
             result.duration = (endTime - startTime);
         } else if (algo == Algorithm.Smart) {
             startTime = System.nanoTime();
-            // Create dependency graph
-            System.out.println("Generate dependency graph.");
             DependencyGraph dg = new DependencyGraph(this.StateSize());
             dg.visit(tree);
             Map<String, RecursionVariable> recursionVariableMap = dg.recursionVariableMap;
@@ -106,8 +105,6 @@ public class MixedKripkeStructure {
             endTime = System.nanoTime();
             result.duration = (endTime - startTime);
         }
-
-        System.out.printf("Evaluate: %s, AD: %d ", formula, alternationDepth.visit(tree).getDepth());
 
         return result;
     }
