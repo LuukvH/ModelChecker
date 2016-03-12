@@ -1,5 +1,9 @@
+<<<<<<< HEAD:src/aldebaran/AldebaranParser.java
 // Generated from C:/Users/laj/Documents/GitHub/ModelChecker\Aldebaran.g4 by ANTLR 4.5.1
 package aldebaran;
+=======
+package aldebaran;// Generated from C:/Users/laj/Documents/GitHub/ModelChecker\Aldebaran.g4 by ANTLR 4.5.1
+>>>>>>> origin/master:src/aldebaran/AldebaranParser.java
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
