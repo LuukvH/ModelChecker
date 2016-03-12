@@ -1,47 +1,52 @@
-import aldebran.AldebaranReader;
+import aldebaran.AldebaranReader;
 import enums.Algorithm;
 import models.Aldebaran;
 import models.MixedKripkeStructure;
 import models.Result;
 
-import javax.xml.crypto.dsig.keyinfo.KeyValue;
-import java.io.BufferedWriter;
+import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        String filename = "";
-        String formula = "";
-        Algorithm algo = Algorithm.Naive;
+        Boolean performanceTest = false;
+        String folder = "";
 
+        Set<File> models = new HashSet<File>();
+        Set<String> formulas = new HashSet<String>();
+        Set<Algorithm> algorithms = new HashSet<Algorithm>();
+
+        /*
         args = new String[6];
         args[0] = "-i";
-        //args[1] = "res/test.aut";
-        args[1] = "res/dining/dining_5.aut";
+        args[1] = "res/test.aut";
         args[2] = "-m";
         args[3] = "4";
         args[4] = "-f";
         args[5] = "nu X. (([i]X && ([plato]X && [others]X )) && mu Y. ([i]Y && (<plato>true || <others>true)) )";
+        */
 
-        if ((args.length > 3) && (args.length % 2 == 0)) {
+        args = new String[2];
+        args[0] = "-t";
+        args[1] = "res/demanding/";
+
+        if ((args.length > 1) && (args.length % 2 == 0)) {
             for (int i = 0; i < args.length - 1; i++) {
                 // Aldebaran file
                 if (args[i] == "-i") {
-                    filename = args[i+1];
+                    models.add(new File(args[i+1]));
                     i++;
                 }
 
                 // Formula
                 if (args[i] == "-f") {
-                    formula = args[i+1];
+                    formulas.add(args[i+1]);
                     i++;
                 }
 
@@ -49,46 +54,97 @@ public class Main {
                 if (args[i] == "-m") {
                     switch(Integer.parseInt(args[i+1])) {
                         case 1:
-                            algo = Algorithm.Naive;
+                            algorithms.add(Algorithm.Naive);
                             break;
                         case 2:
-                            algo = Algorithm.EmersonAndLei;
+                            algorithms.add(Algorithm.EmersonAndLei);
                             break;
                         case 3:
-                            algo = Algorithm.Smart;
+                            algorithms.add(Algorithm.Smart);
                             break;
                     }
+                }
+
+                if (args[i] == "-t") {
+                    performanceTest = true;
+                    folder = args[i+1];
+                    i++;
                 }
             }
         } else {
             System.out.println("-i <filename>  To specify and label transition system (LTS) in aldebaran format.");
             System.out.println("-f <formula>   Formula in MuCalculus to validate on the LTS.");
             System.out.println("-m <i>         Select model checking algorithm.");
-            System.out.println("               0 = naive (default), 1 = emerson and lei, 3 = custom");
+            System.out.println("               0 = naive (default), 1 = emerson and lei");
         }
 
-        if (filename.length() == 0 || formula.length() == 0) {
+        if (algorithms.isEmpty()) {
+            algorithms.add(Algorithm.Naive);
+        }
+
+        if (models.size() > 0 && formulas.size() > 0) {
             System.out.println("Wrong input");
         }
 
-        Long startTime;
-        System.out.print("Read input file ");
-        startTime = System.nanoTime();
-        AldebaranReader reader = new AldebaranReader();
-        Aldebaran aldebaranStructure = reader.ReadFile(filename);
-        System.out.printf("(%f ms) \n",  (System.nanoTime() - startTime)/(float)100000);
+        if (performanceTest) {
+            File[] files = FileUtils.getFiles(folder, ".aut");
+            for(File file : files) {
+                System.out.println("Model: " + file.toString());
+                models.add(file);
+            }
 
-        if (aldebaranStructure == null)
-            return;
+            files = FileUtils.getFiles(folder, ".mcf");
+            for(File file : files) {
+                System.out.print("Formula: " + file.toString());
 
-        startTime = System.nanoTime();
-        System.out.print("Build MixedKripkeStructure ");
-        MixedKripkeStructure mixedKripkeStructure = new MixedKripkeStructure(aldebaranStructure);
-        System.out.printf("(%f ms) \n",  (System.nanoTime() - startTime)/(float)100000);
+                // Read file and find formula
+                BufferedReader br = new BufferedReader(new FileReader(file.toString()));
+                try {
+                    String line = br.readLine();
+                    while (line != null) {
+                        line.trim();
+                        if (!line.startsWith("%") && line.length() > 0){
+                            formulas.add(line);
+                            System.out.println(" - " + line);
+                        }
+                        line = br.readLine();
+                    }
+                } finally {
+                    br.close();
+                }
+
+                models.add(file);
+            }
+
+            algorithms.add(Algorithm.Naive);
+            algorithms.add(Algorithm.EmersonAndLei);
+            algorithms.add(Algorithm.Smart);
+        }
 
 
-        Result result = mixedKripkeStructure.Evaluate(formula, algo);
-        System.out.printf("(%f ms) \n", result.duration / (float)100000);
+        for(File model : models) {
+
+            Long startTime;
+            System.out.printf("Read model: %s", model.toString());
+            startTime = System.nanoTime();
+            AldebaranReader reader = new AldebaranReader();
+            Aldebaran aldebaranStructure = reader.ReadFile(model.toString());
+            System.out.printf("(%f ms) \n", (System.nanoTime() - startTime) / (float) 100000);
+
+            if (aldebaranStructure == null) {
+                System.out.print("Empty aldebaran file ");
+                return;
+            }
+
+            startTime = System.nanoTime();
+            System.out.print("Build MixedKripkeStructure ");
+            MixedKripkeStructure mixedKripkeStructure = new MixedKripkeStructure(aldebaranStructure);
+            System.out.printf("(%f ms) \n", (System.nanoTime() - startTime) / (float) 100000);
+
+            // Result result = mixedKripkeStructure.Evaluate(formula, algo);
+            // System.out.printf("(%f ms) \n", result.duration / (float) 100000);
+
+        }
     }
 }
 

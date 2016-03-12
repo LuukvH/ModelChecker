@@ -1,4 +1,4 @@
-import aldebran.AldebaranReader;
+import aldebaran.AldebaranReader;
 import enums.Algorithm;
 import models.Aldebaran;
 import models.MixedKripkeStructure;
@@ -6,8 +6,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.BitSet;
-import java.util.HashSet;
-import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 

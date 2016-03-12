@@ -13,5 +13,5 @@ label       :  STRING;
 end_state   :  NUMBER;
 
 NUMBER : [0-9]+;
-STRING : [a-zA-Z]+;
+STRING : [a-zA-Z]+[0-9]*;
 WHITESPACE : ( '\t' | ' ' | '\r' | '\n'| '\u000C' )+ -> skip;

@@ -12,7 +12,7 @@ public class MuCalculusNodeContext extends ParserRuleContext implements Observer
     public MuCalculusNodeContext(ParserRuleContext parent, int invokingState) {
         super(parent, invokingState);
     }
-    public Set<String> dependencies = new HashSet<>();
+    public Set<String> dependencies = new HashSet<String>();
     public boolean changed = true;
     public BitSet value;
 

@@ -11,7 +11,7 @@ import java.util.*;
 public class SmartModelChecking extends AbstractParseTreeVisitor<BitSet> implements MuCalculusVisitor<BitSet> {
 
 	private MixedKripkeStructure mixedKripkeStructure;
-	private Map<String, RecursionVariable> recursionVariableMap = new HashMap<>();
+	private Map<String, RecursionVariable> recursionVariableMap = new HashMap<String, RecursionVariable>();
 
 	public SmartModelChecking(MixedKripkeStructure mixedKripkeStructure, Map<String, RecursionVariable> recursionVariableMap ) {
 		this.mixedKripkeStructure = mixedKripkeStructure;

@@ -1,4 +1,4 @@
-import aldebran.AldebaranReader;
+import aldebaran.AldebaranReader;
 import enums.Algorithm;
 import models.Aldebaran;
 import models.MixedKripkeStructure;

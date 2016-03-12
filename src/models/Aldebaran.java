@@ -14,7 +14,7 @@ public class Aldebaran {
     private int nrOfStates = 0;
     private int nrOfTransitions = 0;
 
-    public Set<Transition> transitions = new HashSet<>();
+    public Set<Transition> transitions = new HashSet<Transition>();
 
     public int getFirstState() {
         return firstState;
