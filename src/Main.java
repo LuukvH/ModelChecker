@@ -2,18 +2,12 @@ import aldebaran.AldebaranReader;
 import enums.Algorithm;
 import models.Aldebaran;
 import models.MixedKripkeStructure;
-import models.Result;
-
-<<<<<<< HEAD
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
-=======
-import java.io.IOException;
->>>>>>> origin/master
 
 public class Main {
 
@@ -116,8 +110,6 @@ public class Main {
                 } finally {
                     br.close();
                 }
-
-                models.add(file);
             }
 
             algorithms.add(Algorithm.Naive);

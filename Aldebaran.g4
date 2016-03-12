@@ -13,9 +13,5 @@ label       :  STRING;
 end_state   :  NUMBER;
 
 NUMBER : [0-9]+;
-<<<<<<< HEAD
-STRING : [a-zA-Z]+[0-9]*;
-=======
 STRING : [a-zA-Z0-9]+;
->>>>>>> origin/master
 WHITESPACE : ( '\t' | ' ' | '\r' | '\n'| '\u000C' )+ -> skip;

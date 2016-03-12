@@ -1,9 +1,5 @@
-<<<<<<< HEAD:src/aldebaran/AldebaranParser.java
 // Generated from C:/Users/laj/Documents/GitHub/ModelChecker\Aldebaran.g4 by ANTLR 4.5.1
 package aldebaran;
-=======
-package aldebaran;// Generated from C:/Users/laj/Documents/GitHub/ModelChecker\Aldebaran.g4 by ANTLR 4.5.1
->>>>>>> origin/master:src/aldebaran/AldebaranParser.java
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -100,6 +96,11 @@ public class AldebaranParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_kripkestructure; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof AldebaranVisitor ) return ((AldebaranVisitor<? extends T>)visitor).visitKripkestructure(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final KripkestructureContext kripkestructure() throws RecognitionException {
@@ -152,6 +153,11 @@ public class AldebaranParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_aut_header; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof AldebaranVisitor ) return ((AldebaranVisitor<? extends T>)visitor).visitAut_header(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Aut_headerContext aut_header() throws RecognitionException {
@@ -193,6 +199,11 @@ public class AldebaranParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_first_state; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof AldebaranVisitor ) return ((AldebaranVisitor<? extends T>)visitor).visitFirst_state(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final First_stateContext first_state() throws RecognitionException {
@@ -222,6 +233,11 @@ public class AldebaranParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_nr_of_transitions; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof AldebaranVisitor ) return ((AldebaranVisitor<? extends T>)visitor).visitNr_of_transitions(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Nr_of_transitionsContext nr_of_transitions() throws RecognitionException {
@@ -251,6 +267,11 @@ public class AldebaranParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_nr_of_states; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof AldebaranVisitor ) return ((AldebaranVisitor<? extends T>)visitor).visitNr_of_states(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Nr_of_statesContext nr_of_states() throws RecognitionException {
@@ -288,6 +309,11 @@ public class AldebaranParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_aut_edge; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof AldebaranVisitor ) return ((AldebaranVisitor<? extends T>)visitor).visitAut_edge(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Aut_edgeContext aut_edge() throws RecognitionException {
@@ -329,6 +355,11 @@ public class AldebaranParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_start_state; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof AldebaranVisitor ) return ((AldebaranVisitor<? extends T>)visitor).visitStart_state(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Start_stateContext start_state() throws RecognitionException {
@@ -358,6 +389,11 @@ public class AldebaranParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_label; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof AldebaranVisitor ) return ((AldebaranVisitor<? extends T>)visitor).visitLabel(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final LabelContext label() throws RecognitionException {
@@ -387,6 +423,11 @@ public class AldebaranParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_end_state; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof AldebaranVisitor ) return ((AldebaranVisitor<? extends T>)visitor).visitEnd_state(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final End_stateContext end_state() throws RecognitionException {

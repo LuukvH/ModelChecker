@@ -12,7 +12,7 @@ import org.antlr.v4.runtime.tree.*;
  * @param <T> The return type of the visit operation. Use {@link Void} for
  * operations with no return type.
  */
-public class AldebaranFileVisitor<T> implements AldebaranVisitor<T> {
+public class AldebaranFileVisitor<T> extends AbstractParseTreeVisitor<T> implements AldebaranVisitor<T> {
 
 	public Aldebaran aldebaranStructure;
 	private Transition transition;
@@ -62,19 +62,4 @@ public class AldebaranFileVisitor<T> implements AldebaranVisitor<T> {
 		return visitChildren(ctx);
 	}
 
-	public T visit(ParseTree parseTree) {
-		return null;
-	}
-
-	public T visitChildren(RuleNode ruleNode) {
-		return null;
-	}
-
-	public T visitTerminal(TerminalNode terminalNode) {
-		return null;
-	}
-
-	public T visitErrorNode(ErrorNode errorNode) {
-		return null;
-	}
 }
