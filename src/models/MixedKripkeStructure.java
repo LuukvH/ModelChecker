@@ -22,7 +22,7 @@ public class MixedKripkeStructure {
     public BitSet States;
 
     public Set<String> Labels = new HashSet<String>();
-    public Map<String, Map<Integer, BitSet>> labelmap = new HashMap<String, Map<Integer, BitSet>>(); // label, end, startstates
+    public Map<String, Map<Integer, BitSet>> labelmap;
 
     //public Map<Integer, Map<String, Set<Integer>>> transitionmap = new HashMap<Integer, Map<String, Set<Integer>>>();
 
@@ -44,6 +44,8 @@ public class MixedKripkeStructure {
 
     private void BuildLabelMap(Set<Transition> transitions) {
 
+        labelmap = new HashMap<String, Map<Integer, BitSet>>(Labels.size());
+
         for(Transition t : transitions) {
             Integer start = t.getStartState();
             Integer end = t.getEndState();
@@ -51,7 +53,7 @@ public class MixedKripkeStructure {
 
             Map<Integer, BitSet> m = labelmap.get(label);
             if (m == null) {
-                m = new HashMap<Integer, BitSet>();
+                m = new HashMap<Integer, BitSet>(nr_of_states);
                 labelmap.put(label, m);
             }
 
@@ -62,7 +64,6 @@ public class MixedKripkeStructure {
             }
 
             s.set(start);
-
         }
     }
 

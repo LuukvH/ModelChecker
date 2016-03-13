@@ -102,7 +102,7 @@ public class Main {
                     String line = br.readLine();
                     while (line != null) {
                         line.trim();
-                        if (!line.startsWith("%") && line.length() > 0) {
+                        if (!line.startsWith("%") && (line.length() > 0)) {
                             formulas.add(line);
                             System.out.println(" - " + line);
                         }
@@ -113,7 +113,7 @@ public class Main {
                 }
             }
 
-            nrofiterations = 10;
+            nrofiterations = 100;
             algorithms.clear();
             algorithms.add(Algorithm.Naive);
             algorithms.add(Algorithm.EmersonAndLei);
@@ -152,9 +152,10 @@ public class Main {
                 for (String formula : formulas) {
                     Long resultsum = 0L;
                     for (int i = 0; i < nrofiterations; i++) {
+                        System.out.print(String.format("Evaluate %s %s ", algorithm.toString(), formula));
                         Result result = mixedKripkeStructure.Evaluate(formula, algorithm);
                         resultsum += result.duration;
-                        System.out.println(String.format("Evaluate %s %s, AD: %d (%f ms)", algorithm.toString(), formula, result.AlternationDepth, result.duration / (float) 100000));
+                        System.out.println(String.format("AD: %d (%f ms)", result.AlternationDepth, result.duration / (float) 100000));
                     }
                     Long result = resultsum / nrofiterations;
                     stringBuilder.append(String.format(",%d", result));
@@ -168,6 +169,8 @@ public class Main {
         // Write result file
         try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(folder + "result.txt"), "utf-8"))) {
             writer.write(stringBuilder.toString());
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 }
