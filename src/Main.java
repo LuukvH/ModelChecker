@@ -5,10 +5,7 @@ import models.MixedKripkeStructure;
 import models.Result;
 import org.antlr.v4.runtime.misc.OrderedHashSet;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,6 +14,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
 
         Boolean performanceTest = false;
+        int nrofiterations = 1;
         String folder = "";
 
         Set<File> models = new HashSet<File>();
@@ -115,12 +113,20 @@ public class Main {
                 }
             }
 
+            nrofiterations = 10;
             algorithms.clear();
             algorithms.add(Algorithm.Naive);
             algorithms.add(Algorithm.EmersonAndLei);
             algorithms.add(Algorithm.Smart);
         }
 
+        // Create header
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("file,algorithm");
+        for (String formula : formulas) {
+            stringBuilder.append("," + formula);
+        }
+        stringBuilder.append('\n');
 
         for (File model : models) {
 
@@ -142,12 +148,26 @@ public class Main {
             System.out.printf("(%f ms) \n", (System.nanoTime() - startTime) / (float) 100000);
 
             for (Algorithm algorithm : algorithms) {
+                stringBuilder.append(String.format("%s,%s",model.toString(), algorithm.toString())); // Add algorithm to output
                 for (String formula : formulas) {
-                    Result result = mixedKripkeStructure.Evaluate(formula, algorithm);
-                    System.out.println(String.format("Evaluate %s %s, AD: %d (%f ms)", algorithm.toString(), formula, result.AlternationDepth, result.duration / (float) 100000));
+                    Long resultsum = 0L;
+                    for (int i = 0; i < nrofiterations; i++) {
+                        Result result = mixedKripkeStructure.Evaluate(formula, algorithm);
+                        resultsum += result.duration;
+                        System.out.println(String.format("Evaluate %s %s, AD: %d (%f ms)", algorithm.toString(), formula, result.AlternationDepth, result.duration / (float) 100000));
+                    }
+                    Long result = resultsum / nrofiterations;
+                    stringBuilder.append(String.format(",%d", result));
+                    System.out.println(String.format("Average: %f ms", result / (float) 100000));
                 }
+                stringBuilder.append('\n');
             }
             System.out.println();
+        }
+
+        // Write result file
+        try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(folder + "result.txt"), "utf-8"))) {
+            writer.write(stringBuilder.toString());
         }
     }
 }

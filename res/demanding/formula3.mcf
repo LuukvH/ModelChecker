@@ -1,0 +1,3 @@
+% mu = least fix point
+
+nu Y. (<ask>Y && mu X. (<i>X || <wisdom>true))
