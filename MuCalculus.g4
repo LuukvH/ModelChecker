@@ -21,6 +21,6 @@ endrecursion : RECURSIONVARIABLE;
 FALSE : 'false';
 TRUE : 'true';
 NUMBER : [0-9]+;
-STRING : [a-z]+;
+STRING : [a-z0-9]+;
 RECURSIONVARIABLE : [A-Z];
 WHITESPACE : ( '\t' | ' ' | '\r' | '\n'| '\u000C' )+ -> skip;

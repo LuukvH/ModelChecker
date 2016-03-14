@@ -1,4 +1,5 @@
-package MuCalculus;// Generated from C:/Users/laj/Documents/GitHub/ModelChecker\MuCalculus.g4 by ANTLR 4.5.1
+// Generated from C:/Users/laj/Documents/GitHub/ModelChecker\MuCalculus.g4 by ANTLR 4.5.1
+package MuCalculus;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**

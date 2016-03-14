@@ -33,7 +33,7 @@ public class Main {
 
         args = new String[2];
         args[0] = "-t";
-        args[1] = "res/demanding/";
+        args[1] = "res/boardgame/";
 
         if ((args.length > 1) && (args.length % 2 == 0)) {
             for (int i = 0; i < args.length - 1; i++) {
@@ -152,10 +152,10 @@ public class Main {
                 for (String formula : formulas) {
                     Long resultsum = 0L;
                     for (int i = 0; i < nrofiterations; i++) {
-                        System.out.print(String.format("Evaluate %s %s ", algorithm.toString(), formula));
+                        System.out.print(String.format("Evaluate %s %s", algorithm.toString(), formula));
                         Result result = mixedKripkeStructure.Evaluate(formula, algorithm);
                         resultsum += result.duration;
-                        System.out.println(String.format("AD: %d (%f ms)", result.AlternationDepth, result.duration / (float) 100000));
+                        System.out.println(String.format(", AD: %d (%f ms)", result.AlternationDepth, result.duration / (float) 100000));
                     }
                     Long result = resultsum / nrofiterations;
                     stringBuilder.append(String.format(",%d", result));

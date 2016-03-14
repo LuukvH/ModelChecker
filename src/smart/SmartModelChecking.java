@@ -70,12 +70,14 @@ public class SmartModelChecking extends AbstractParseTreeVisitor<BitSet> impleme
 		BitSet s = new BitSet(mixedKripkeStructure.StateSize());
 
 		Map<Integer, BitSet> lm = mixedKripkeStructure.labelmap.get(label);
-		for (int i = bs.nextSetBit(0); i != -1; i = bs.nextSetBit(i + 1)) {
-			BitSet ls = lm.get(i);
-			if (ls != null) {
-				s.or(ls);
+		if (lm != null) {
+			for (int i = bs.nextSetBit(0); i != -1; i = bs.nextSetBit(i + 1)) {
+				BitSet ls = lm.get(i);
+				if (ls != null) {
+					s.or(ls);
+				}
 			}
-		}
+		}else {s = new BitSet(mixedKripkeStructure.StateSize());}
 		return s;
 	}
 
