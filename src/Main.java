@@ -121,12 +121,16 @@ public class Main {
         }
 
         // Create header
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("file,algorithm");
+        StringBuilder performancestring = new StringBuilder();
+        StringBuilder resultstring = new StringBuilder();
+        performancestring.append("file,algorithm");
+        resultstring.append("file,algorithm");
         for (String formula : formulas) {
-            stringBuilder.append("," + formula);
+            performancestring.append("," + formula);
+            resultstring.append("," + formula);
         }
-        stringBuilder.append('\n');
+        performancestring.append('\n');
+        resultstring.append('\n');
 
         for (File model : models) {
 
@@ -148,27 +152,42 @@ public class Main {
             System.out.printf("(%f ms) \n", (System.nanoTime() - startTime) / (float) 100000);
 
             for (Algorithm algorithm : algorithms) {
-                stringBuilder.append(String.format("%s,%s",model.toString(), algorithm.toString())); // Add algorithm to output
+                performancestring.append(String.format("%s,%s",model.toString(), algorithm.toString())); // Add algorithm to output
+                resultstring.append(String.format("%s,%s",model.toString(), algorithm.toString())); // Add algorithm to output
                 for (String formula : formulas) {
                     Long resultsum = 0L;
-                    for (int i = 0; i < nrofiterations; i++) {
+                    String answer = "";
+                    for (int i = 0; i < 100; i++) {
                         System.out.print(String.format("Evaluate %s %s", algorithm.toString(), formula));
                         Result result = mixedKripkeStructure.Evaluate(formula, algorithm);
+                        if (result.answer.get(0)) {
+                            answer = "True";
+                        } else {
+                            answer = "False";
+                        }
                         resultsum += result.duration;
                         System.out.println(String.format(", AD: %d (%f ms)", result.AlternationDepth, result.duration / (float) 100000));
                     }
                     Long result = resultsum / nrofiterations;
-                    stringBuilder.append(String.format(",%d", result));
+                    performancestring.append(String.format(",%d", result));
+                    resultstring.append(String.format(",%s", answer));
                     System.out.println(String.format("Average: %f ms", result / (float) 100000));
                 }
-                stringBuilder.append('\n');
+                performancestring.append('\n');
+                resultstring.append('\n');
             }
             System.out.println();
         }
 
         // Write result file
+        try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(folder + "performance.txt"), "utf-8"))) {
+            writer.write(performancestring.toString());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        // Write result file
         try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(folder + "result.txt"), "utf-8"))) {
-            writer.write(stringBuilder.toString());
+            writer.write(resultstring.toString());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
