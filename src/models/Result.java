@@ -8,5 +8,4 @@ import java.util.BitSet;
 public class Result{
     public long duration;
     public BitSet answer;
-    public int AlternationDepth;
 }

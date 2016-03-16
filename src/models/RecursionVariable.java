@@ -1,4 +1,4 @@
-package smart;
+package models;
 
 import ObserverPattern.Subject;
 

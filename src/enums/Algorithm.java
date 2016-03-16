@@ -5,6 +5,5 @@ package enums;
  */
 public enum Algorithm {
     Naive,
-    EmersonAndLei,
-    Smart;
+    EmersonAndLei;
 }

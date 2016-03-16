@@ -23,10 +23,10 @@ public class Main {
 
         /*
         args = new String[6];
-        args[0] = "-i";
+        args[0] = "-m";
         args[1] = "res/test.aut";
-        args[2] = "-m";
-        args[3] = "4";
+        args[2] = "-a";
+        args[3] = "1";
         args[4] = "-f";
         args[5] = "nu X. (([i]X && ([plato]X && [others]X )) && mu Y. ([i]Y && (<plato>true || <others>true)) )";
         */
@@ -34,18 +34,20 @@ public class Main {
         args = new String[8];
         args[0] = "-t";
         args[1] = "res/dining/";
+        args[2] = "-i";
+        args[3] = "20";
         //args[2] = "-f";
         //args[3] = "nu X. (([i]X && ([plato]X && [others]X )) && mu Y. ([i]Y && (<plato>true || <others>true)) )";
 
         if ((args.length > 1) && (args.length % 2 == 0)) {
             for (int i = 0; i < args.length - 1; i++) {
-                if (args[i] == "-i") {
+                if (args[i] == "-m") {
                     models.add(new File(args[i + 1]));
                     i++;
                 } else if (args[i] == "-f") {
                     formulas.add(args[i + 1]);
                     i++;
-                } else if (args[i] == "-m") {
+                } else if (args[i] == "-a") {
                     switch (Integer.parseInt(args[i + 1])) {
                         case 1:
                             algorithms.add(Algorithm.Naive);
@@ -53,21 +55,23 @@ public class Main {
                         case 2:
                             algorithms.add(Algorithm.EmersonAndLei);
                             break;
-                        case 3:
-                            algorithms.add(Algorithm.Smart);
-                            break;
                     }
                 } else if (args[i] == "-t") {
                     performanceTest = true;
                     folder = args[i + 1];
                     i++;
+                } else if (args[i] == "-i") {
+                    nrofiterations = Integer.parseInt(args[i + 1]);
+                    i++;
                 }
             }
         } else {
-            System.out.println("-i <filename>  To specify and label transition system (LTS) in aldebaran format.");
+            System.out.println("-m <filename>  To specify and label transition system (LTS) in aldebaran format.");
             System.out.println("-f <formula>   Formula in MuCalculus to validate on the LTS.");
-            System.out.println("-m <i>         Select model checking algorithm.");
+            System.out.println("-a <i>         Select model checking algorithm.");
             System.out.println("               0 = naive (default), 1 = emerson and lei");
+            System.out.println("-t <path>      Test all files and models inside directory.");
+            System.out.println("-t <path>      Test all files and models inside directory.");
         }
 
         if (algorithms.isEmpty()) {
@@ -102,11 +106,9 @@ public class Main {
                 }
             }
 
-            nrofiterations = 2;
             algorithms.clear();
             algorithms.add(Algorithm.Naive);
             algorithms.add(Algorithm.EmersonAndLei);
-            algorithms.add(Algorithm.Smart);
         }
 
         // Create header
@@ -128,9 +130,9 @@ public class Main {
             startTime = System.nanoTime();
             AldebaranReader reader = new AldebaranReader();
             Aldebaran aldebaranStructure = reader.ReadFile(model.toString());
-            System.out.printf("(%f ms) \n", (System.nanoTime() - startTime) / (float) 100000);
+            System.out.printf(" (%f ms) \n", (System.nanoTime() - startTime) / (float) 100000);
 
-            if (aldebaranStructure != null) {
+            if (aldebaranStructure == null) {
                 System.out.print("Empty aldebaran file ");
                 return;
             }
@@ -148,15 +150,11 @@ public class Main {
                     Long resultsum = 0L;
                     String answer = "";
                     for (int i = 0; i < nrofiterations; i++) {
-                        System.out.print(String.format("Evaluate %s %s", algorithm.toString(), formula));
+                        System.out.print(String.format("Evaluate %s %s ", algorithm.toString(), formula));
                         Result result = mixedKripkeStructure.Evaluate(formula, algorithm);
-                        if (result.answer.get(0)) {
-                            answer = "True";
-                        } else {
-                            answer = "False";
-                        }
+                        answer = result.answer.get(0) ? "True" : "False";
                         resultsum += result.duration;
-                        System.out.println(String.format(", AD: %d (%f ms)", result.AlternationDepth, result.duration / (float) 100000));
+                        System.out.println(String.format("-> %s (%f ms)", answer, result.duration / (float) 100000));
                     }
                     Long result = resultsum / nrofiterations;
                     performancestring.append(String.format(",%d", result));

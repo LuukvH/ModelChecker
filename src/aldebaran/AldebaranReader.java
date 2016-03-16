@@ -1,12 +1,15 @@
 package aldebaran;
 
 import models.Aldebaran;
+import models.Transition;
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -36,32 +39,39 @@ public class AldebaranReader {
     }
 
     public Aldebaran ReadFile(String filename) {
-        AldebaranLexer lexer = null;
+        Aldebaran aldebaran;
 
-        Long startTime = System.nanoTime();
-        String filecontent = "";
-        try {
-            filecontent = readFile(filename);
+        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+            String line;
+            String[] splitline;
+
+            line = br.readLine();
+            splitline = line.split(",");
+            splitline[0]=splitline[0].replace("des (", "").trim();
+            splitline[1]=splitline[1].trim();
+            splitline[2]=splitline[2].replace(")", "").trim();
+            int firststate = Integer.parseInt(splitline[0]);
+            int nroftransitions = Integer.parseInt(splitline[1]);
+            int nrofstates = Integer.parseInt(splitline[2]);
+            aldebaran = new Aldebaran(firststate,nrofstates,nroftransitions);
+
+            Transition transition;
+            while ((line = br.readLine()) != null) {
+                transition = new Transition();
+                splitline = line.split(",");
+                splitline[0]=splitline[0].replace('(', ' ').trim();
+                splitline[1]=splitline[1].replace('"', ' ').trim();
+                splitline[2]=splitline[2].replace(')', ' ').trim();
+                transition.setStartState(Integer.parseInt(splitline[0]));
+                transition.setLabel(splitline[1]);
+                transition.setEndState(Integer.parseInt(splitline[2]));
+                aldebaran.transitions.add(transition);
+            }
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
-        //System.out.printf("(%f ms) \n", (System.nanoTime() - startTime) / (float) 100000);
 
-        //try {
-            //lexer = new AldebaranLexer(new ANTLRFileStream(filename));
-            lexer = new AldebaranLexer(new ANTLRInputStream(filecontent));
-        //} catch (IOException e) {
-            //System.out.println(String.format("File \"%s\" not found.", filename));
-            //return null;
-        //}
-
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        AldebaranParser parser = new AldebaranParser(tokens);
-
-        ParseTree tree = parser.aldebaran();
-        AldebaranFileVisitor visitor = new AldebaranFileVisitor();
-        visitor.visit(tree);
-
-        return visitor.aldebaranStructure;
+        return aldebaran;
     }
 }

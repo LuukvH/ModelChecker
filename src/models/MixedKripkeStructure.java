@@ -7,11 +7,7 @@ import enums.Algorithm;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
-import smart.DependencyGraph;
-import smart.RecursionVariable;
-import smart.SmartModelChecking;
 
-import java.io.Console;
 import java.util.*;
 
 /**
@@ -32,7 +28,7 @@ public class MixedKripkeStructure {
             Labels.add(transition.getLabel());
         }
 
-        // Todo normalize bits if states do not start at 0
+        nr_of_states = aldebaranStructure.getNrOfStates();
         States = new BitSet(aldebaranStructure.getNrOfStates());
         States.set(0, aldebaranStructure.getNrOfStates(), true);
 
@@ -52,6 +48,7 @@ public class MixedKripkeStructure {
             Integer start = t.getStartState();
             Integer end = t.getEndState();
             String label = t.getLabel();
+            Labels.add(transition.getLabel());
 
             Map<Integer, BitSet> m = labelmap.get(label);
             if (m == null) {
@@ -77,27 +74,13 @@ public class MixedKripkeStructure {
 
         long startTime = 0;
         long endTime = 0;
-        long duration = 0;
         Result result = new Result();
-
-        AlternationDepth alternationDepth = new AlternationDepth();
-        result.AlternationDepth = alternationDepth.visit(tree).getDepth();
-
 
         if (algo == Algorithm.EmersonAndLei) {
             MuCalculusVisitor<BitSet> modelChecking;
             modelChecking = new EmersonLeiModelChecking(this);
             startTime = System.nanoTime();
             result.answer = modelChecking.visit(tree);
-            endTime = System.nanoTime();
-            result.duration = (endTime - startTime);
-        } else if (algo == Algorithm.Smart) {
-            startTime = System.nanoTime();
-            DependencyGraph dg = new DependencyGraph(this.StateSize());
-            dg.visit(tree);
-            Map<String, RecursionVariable> recursionVariableMap = dg.recursionVariableMap;
-            SmartModelChecking smartModelChecking = new SmartModelChecking(this, recursionVariableMap);
-            result.answer = smartModelChecking.visit(tree);
             endTime = System.nanoTime();
             result.duration = (endTime - startTime);
         } else {

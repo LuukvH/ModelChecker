@@ -1,8 +1,7 @@
-package smart;
+package models;
 
 import MuCalculus.MuCalculusParser;
 import MuCalculus.MuCalculusVisitor;
-import ObserverPattern.Observer;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
 import java.util.HashMap;
