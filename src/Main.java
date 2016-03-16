@@ -17,37 +17,17 @@ public class Main {
         int nrofiterations = 1;
         String folder = "";
 
-        Set<File> models = new HashSet<File>();
-        Set<String> formulas = new HashSet<String>();
+        Set<File> models = new OrderedHashSet<File>();
+        Set<String> formulas = new OrderedHashSet<String>();
         Set<Algorithm> algorithms = new OrderedHashSet<>();
-
-        /*
-        args = new String[6];
-        args[0] = "-m";
-        args[1] = "res/test.aut";
-        args[2] = "-a";
-        args[3] = "1";
-        args[4] = "-f";
-        args[5] = "nu X. (([i]X && ([plato]X && [others]X )) && mu Y. ([i]Y && (<plato>true || <others>true)) )";
-        */
-
-        args = new String[8];
-        args[0] = "-t";
-        args[1] = "res/dining/";
-        args[2] = "-i";
-        args[3] = "20";
-        //args[2] = "-f";
-        //args[3] = "nu X. (([i]X && ([plato]X && [others]X )) && mu Y. ([i]Y && (<plato>true || <others>true)) )";
 
         if ((args.length > 1) && (args.length % 2 == 0)) {
             for (int i = 0; i < args.length - 1; i++) {
-                if (args[i] == "-m") {
+                if (args[i].equalsIgnoreCase("-m")) {
                     models.add(new File(args[i + 1]));
-                    i++;
-                } else if (args[i] == "-f") {
+                } else if (args[i].equalsIgnoreCase("-f")) {
                     formulas.add(args[i + 1]);
-                    i++;
-                } else if (args[i] == "-a") {
+                } else if (args[i].equalsIgnoreCase("-a")) {
                     switch (Integer.parseInt(args[i + 1])) {
                         case 1:
                             algorithms.add(Algorithm.Naive);
@@ -56,13 +36,11 @@ public class Main {
                             algorithms.add(Algorithm.EmersonAndLei);
                             break;
                     }
-                } else if (args[i] == "-t") {
+                } else if (args[i].equalsIgnoreCase("-t")) {
                     performanceTest = true;
                     folder = args[i + 1];
-                    i++;
-                } else if (args[i] == "-i") {
+                } else if (args[i].equalsIgnoreCase("-i")) {
                     nrofiterations = Integer.parseInt(args[i + 1]);
-                    i++;
                 }
             }
         } else {
@@ -71,8 +49,9 @@ public class Main {
             System.out.println("-a <i>         Select model checking algorithm.");
             System.out.println("               0 = naive (default), 1 = emerson and lei");
             System.out.println("-t <path>      Test all files and models inside directory.");
-            System.out.println("-t <path>      Test all files and models inside directory.");
+            System.out.println("-i <n>         Set number of test itterations.");
         }
+
 
         if (algorithms.isEmpty()) {
             algorithms.add(Algorithm.Naive);
@@ -111,6 +90,16 @@ public class Main {
             algorithms.add(Algorithm.EmersonAndLei);
         }
 
+        if (models.isEmpty()) {
+            System.out.println("Supply a model with -m \"filename.aut\" ");
+            return;
+        }
+
+        if (formulas.isEmpty()) {
+            System.out.println("Supply a formula with -f \"formula\" ");
+            return;
+        }
+
         // Create header
         StringBuilder performancestring = new StringBuilder();
         StringBuilder resultstring = new StringBuilder();
@@ -130,7 +119,7 @@ public class Main {
             startTime = System.nanoTime();
             AldebaranReader reader = new AldebaranReader();
             Aldebaran aldebaranStructure = reader.ReadFile(model.toString());
-            System.out.printf(" (%f ms) \n", (System.nanoTime() - startTime) / (float) 100000);
+            System.out.printf(" (%f ms) \n", (System.nanoTime() - startTime) / (float) 1000000);
 
             if (aldebaranStructure == null) {
                 System.out.print("Empty aldebaran file ");
@@ -140,7 +129,7 @@ public class Main {
             startTime = System.nanoTime();
             System.out.print("Build MixedKripkeStructure ");
             MixedKripkeStructure mixedKripkeStructure = new MixedKripkeStructure(aldebaranStructure);
-            System.out.printf("(%f ms) \n", (System.nanoTime() - startTime) / (float) 100000);
+            System.out.printf("(%f ms) \n", (System.nanoTime() - startTime) / (float) 1000000);
             aldebaranStructure = null; // Clear memory
 
             for (Algorithm algorithm : algorithms) {
@@ -154,12 +143,12 @@ public class Main {
                         Result result = mixedKripkeStructure.Evaluate(formula, algorithm);
                         answer = result.answer.get(0) ? "True" : "False";
                         resultsum += result.duration;
-                        System.out.println(String.format("-> %s (%f ms)", answer, result.duration / (float) 100000));
+                        System.out.println(String.format("-> %s (%f ms)", answer, result.duration / (float) 1000000));
                     }
                     Long result = resultsum / nrofiterations;
                     performancestring.append(String.format(",%d", result));
                     resultstring.append(String.format(",%s", answer));
-                    System.out.println(String.format("Average: %f ms", result / (float) 100000));
+                    System.out.println(String.format("Average: %f ms", result / (float) 1000000));
                 }
                 performancestring.append('\n');
                 resultstring.append('\n');
@@ -174,12 +163,18 @@ public class Main {
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
+
             // Write result file
             try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(folder + "result.txt"), "utf-8"))) {
                 writer.write(resultstring.toString());
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
+
+            System.out.println("-- Report --");
+            System.out.print(performancestring.toString());
+            System.out.println();
+            System.out.print(resultstring.toString());
         }
     }
 }

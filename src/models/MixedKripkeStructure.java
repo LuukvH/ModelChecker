@@ -17,17 +17,11 @@ public class MixedKripkeStructure {
 
     private int nr_of_states = 0;
     public BitSet States;
-
-    public Set<String> Labels = new HashSet<String>();
     public Map<String, Map<Integer, BitSet>> labelmap;
 
     //public Map<Integer, Map<String, Set<Integer>>> transitionmap = new HashMap<Integer, Map<String, Set<Integer>>>();
 
     public MixedKripkeStructure(Aldebaran aldebaranStructure) {
-        for(Transition transition : aldebaranStructure.transitions) {
-            Labels.add(transition.getLabel());
-        }
-
         nr_of_states = aldebaranStructure.getNrOfStates();
         States = new BitSet(aldebaranStructure.getNrOfStates());
         States.set(0, aldebaranStructure.getNrOfStates(), true);
@@ -41,14 +35,13 @@ public class MixedKripkeStructure {
 
     private void BuildLabelMap(Set<Transition> transitions) {
 
-        labelmap = new HashMap<String, Map<Integer, BitSet>>(Labels.size() * 2);
+        labelmap = new HashMap<String, Map<Integer, BitSet>>(100);
 
         System.out.print("[...................]");
         for(Transition t : transitions) {
             Integer start = t.getStartState();
             Integer end = t.getEndState();
             String label = t.getLabel();
-            Labels.add(transition.getLabel());
 
             Map<Integer, BitSet> m = labelmap.get(label);
             if (m == null) {

@@ -10,7 +10,7 @@ import java.util.Set;
  */
 public class Aldebaran {
 
-    private int firstState=0;
+    private int firstState = 0;
     private int nrOfStates = 0;
     private int nrOfTransitions = 0;
 

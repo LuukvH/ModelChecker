@@ -1,0 +1,19 @@
+file,algorithm,nu X. ((<ask>X || <i>X) || <wisdom>X) || <playing>X),mu X. nu Y. (<playing>true || (mu Z.(X || <wisdom>Z) && <i> Y)),[ask]<wisdom>true,nu Y. (<ask>Y && mu X. (<i>X || <wisdom>true)),nu X . [i] false,nu X. mu Y. ( (<playing>true && [i]X) || ([playing]false && [i]Y) )
+res\demanding\demanding_children_5.aut,Naive,982276,882896,58218,307170,82382,400153
+res\demanding\demanding_children_5.aut,EmersonAndLei,628258,255852,98224,397399,72076,361657
+res\demanding\demanding_children_6.aut,Naive,580168,895008,74327,341106,127363,651030
+res\demanding\demanding_children_6.aut,EmersonAndLei,820828,526273,66509,285731,117828,307170
+res\demanding\demanding_children_2.aut,Naive,98195,184900,14154,137165,45780,125112
+res\demanding\demanding_children_2.aut,EmersonAndLei,172374,76755,12644,53835,20343,69559
+res\demanding\demanding_children_4.aut,Naive,61416,192244,13177,68434,23986,102044
+res\demanding\demanding_children_4.aut,EmersonAndLei,167695,76548,13769,76163,20284,80042
+res\demanding\demanding_children_3.aut,Naive,37134,99971,11223,58425,15309,80516
+res\demanding\demanding_children_3.aut,EmersonAndLei,36748,54634,10393,41664,16434,60113
+res\demanding\demanding_children_10.aut,Naive,22054562,10994204,761722,3590338,2215489,11108123
+res\demanding\demanding_children_10.aut,EmersonAndLei,14044825,1523563,328935,1466766,1203896,3421428
+res\demanding\demanding_children_9.aut,Naive,4197335,2566930,186321,937709,637764,1762388
+res\demanding\demanding_children_9.aut,EmersonAndLei,2781087,481617,150905,901167,613541,1384118
+res\demanding\demanding_children_8.aut,Naive,1545150,896666,63992,321562,217029,858703
+res\demanding\demanding_children_8.aut,EmersonAndLei,1957504,292956,105746,335035,216704,575163
+res\demanding\demanding_children_7.aut,Naive,473059,368971,33047,137698,70566,284842
+res\demanding\demanding_children_7.aut,EmersonAndLei,473148,110484,31744,112497,69589,204681
