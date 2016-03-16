@@ -17,7 +17,7 @@ public class AldebaranBaseVisitor<T> extends AbstractParseTreeVisitor<T> impleme
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitKripkestructure(AldebaranParser.KripkestructureContext ctx) { return visitChildren(ctx); }
+	@Override public T visitAldebaran(AldebaranParser.AldebaranContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

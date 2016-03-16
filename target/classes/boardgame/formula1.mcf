@@ -1,0 +1,3 @@
+% mu = least fixpoint
+
+mu X. (<choose1><choose2>X || <won>true)

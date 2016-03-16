@@ -1,0 +1,4 @@
+% mu = least fixpoint
+% \item \textbf{Gb:} $\mu X. ( [choose1]<choose2>X \vee <won>true) $
+
+mu X. ([choose1]<choose2>X || <won>true)

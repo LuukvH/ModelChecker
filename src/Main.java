@@ -31,26 +31,21 @@ public class Main {
         args[5] = "nu X. (([i]X && ([plato]X && [others]X )) && mu Y. ([i]Y && (<plato>true || <others>true)) )";
         */
 
-        args = new String[2];
+        args = new String[8];
         args[0] = "-t";
-        args[1] = "res/boardgame/";
+        args[1] = "res/dining/";
+        //args[2] = "-f";
+        //args[3] = "nu X. (([i]X && ([plato]X && [others]X )) && mu Y. ([i]Y && (<plato>true || <others>true)) )";
 
         if ((args.length > 1) && (args.length % 2 == 0)) {
             for (int i = 0; i < args.length - 1; i++) {
-                // Aldebaran file
                 if (args[i] == "-i") {
                     models.add(new File(args[i + 1]));
                     i++;
-                }
-
-                // Formula
-                if (args[i] == "-f") {
+                } else if (args[i] == "-f") {
                     formulas.add(args[i + 1]);
                     i++;
-                }
-
-                // Formula
-                if (args[i] == "-m") {
+                } else if (args[i] == "-m") {
                     switch (Integer.parseInt(args[i + 1])) {
                         case 1:
                             algorithms.add(Algorithm.Naive);
@@ -62,9 +57,7 @@ public class Main {
                             algorithms.add(Algorithm.Smart);
                             break;
                     }
-                }
-
-                if (args[i] == "-t") {
+                } else if (args[i] == "-t") {
                     performanceTest = true;
                     folder = args[i + 1];
                     i++;
@@ -79,10 +72,6 @@ public class Main {
 
         if (algorithms.isEmpty()) {
             algorithms.add(Algorithm.Naive);
-        }
-
-        if (models.size() > 0 && formulas.size() > 0) {
-            System.out.println("Wrong input");
         }
 
         if (performanceTest) {
@@ -113,7 +102,7 @@ public class Main {
                 }
             }
 
-            nrofiterations = 100;
+            nrofiterations = 2;
             algorithms.clear();
             algorithms.add(Algorithm.Naive);
             algorithms.add(Algorithm.EmersonAndLei);
@@ -141,7 +130,7 @@ public class Main {
             Aldebaran aldebaranStructure = reader.ReadFile(model.toString());
             System.out.printf("(%f ms) \n", (System.nanoTime() - startTime) / (float) 100000);
 
-            if (aldebaranStructure == null) {
+            if (aldebaranStructure != null) {
                 System.out.print("Empty aldebaran file ");
                 return;
             }
@@ -150,6 +139,7 @@ public class Main {
             System.out.print("Build MixedKripkeStructure ");
             MixedKripkeStructure mixedKripkeStructure = new MixedKripkeStructure(aldebaranStructure);
             System.out.printf("(%f ms) \n", (System.nanoTime() - startTime) / (float) 100000);
+            aldebaranStructure = null; // Clear memory
 
             for (Algorithm algorithm : algorithms) {
                 performancestring.append(String.format("%s,%s",model.toString(), algorithm.toString())); // Add algorithm to output
@@ -157,7 +147,7 @@ public class Main {
                 for (String formula : formulas) {
                     Long resultsum = 0L;
                     String answer = "";
-                    for (int i = 0; i < 100; i++) {
+                    for (int i = 0; i < nrofiterations; i++) {
                         System.out.print(String.format("Evaluate %s %s", algorithm.toString(), formula));
                         Result result = mixedKripkeStructure.Evaluate(formula, algorithm);
                         if (result.answer.get(0)) {
@@ -179,21 +169,19 @@ public class Main {
             System.out.println();
         }
 
-        // Write result file
-        try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(folder + "performance.txt"), "utf-8"))) {
-            writer.write(performancestring.toString());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        // Write result file
-        try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(folder + "result.txt"), "utf-8"))) {
-            writer.write(resultstring.toString());
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        if (performanceTest) {
+            // Write result file
+            try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(folder + "performance.txt"), "utf-8"))) {
+                writer.write(performancestring.toString());
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            // Write result file
+            try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(folder + "result.txt"), "utf-8"))) {
+                writer.write(resultstring.toString());
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
     }
 }
-
-
-
-

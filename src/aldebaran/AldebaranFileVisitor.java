@@ -17,12 +17,13 @@ public class AldebaranFileVisitor<T> extends AbstractParseTreeVisitor<T> impleme
 	public Aldebaran aldebaranStructure;
 	private Transition transition;
 
-	 public T visitKripkestructure(AldebaranParser.KripkestructureContext ctx) {
+	@Override
+	public T visitAldebaran(AldebaranParser.AldebaranContext ctx) {
 		aldebaranStructure = new Aldebaran();
 		return visitChildren(ctx);
 	}
 
-	 public T visitAut_header(AldebaranParser.Aut_headerContext ctx) {
+	public T visitAut_header(AldebaranParser.Aut_headerContext ctx) {
 		return visitChildren(ctx);
 	}
 

@@ -1,0 +1,4 @@
+% mu = least fixpoint
+% \item \textbf{Gc:} $\nu Y.\mu X. ([choose1]<choose2>X \vee <won>Y)$
+
+nu Y. mu X. ([choose1]<choose2>X || <won>Y)

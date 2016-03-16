@@ -1,0 +1,3 @@
+% mu = least fix point
+
+mu X. nu Y. (<playing>true || (mu Z.(X || <wisdom>Z) && <i> Y))

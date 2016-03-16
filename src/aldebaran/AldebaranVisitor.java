@@ -11,11 +11,11 @@ import org.antlr.v4.runtime.tree.ParseTreeVisitor;
  */
 public interface AldebaranVisitor<T> extends ParseTreeVisitor<T> {
 	/**
-	 * Visit a parse tree produced by {@link AldebaranParser#kripkestructure}.
+	 * Visit a parse tree produced by {@link AldebaranParser#aldebaran}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitKripkestructure(AldebaranParser.KripkestructureContext ctx);
+	T visitAldebaran(AldebaranParser.AldebaranContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link AldebaranParser#aut_header}.
 	 * @param ctx the parse tree

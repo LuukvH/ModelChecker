@@ -11,6 +11,7 @@ import smart.DependencyGraph;
 import smart.RecursionVariable;
 import smart.SmartModelChecking;
 
+import java.io.Console;
 import java.util.*;
 
 /**
@@ -44,8 +45,9 @@ public class MixedKripkeStructure {
 
     private void BuildLabelMap(Set<Transition> transitions) {
 
-        labelmap = new HashMap<String, Map<Integer, BitSet>>(Labels.size());
+        labelmap = new HashMap<String, Map<Integer, BitSet>>(Labels.size() * 2);
 
+        System.out.print("[...................]");
         for(Transition t : transitions) {
             Integer start = t.getStartState();
             Integer end = t.getEndState();
@@ -53,7 +55,7 @@ public class MixedKripkeStructure {
 
             Map<Integer, BitSet> m = labelmap.get(label);
             if (m == null) {
-                m = new HashMap<Integer, BitSet>(nr_of_states);
+                m = new HashMap<Integer, BitSet>(nr_of_states * 2);
                 labelmap.put(label, m);
             }
 
