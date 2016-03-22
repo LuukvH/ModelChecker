@@ -1,8 +1,6 @@
 import aldebaran.AldebaranReader;
 import enums.Algorithm;
-import models.Aldebaran;
-import models.MixedKripkeStructure;
-import models.Result;
+import models.*;
 import org.antlr.v4.runtime.misc.OrderedHashSet;
 
 import java.io.*;
@@ -86,7 +84,7 @@ public class Main {
             }
 
             algorithms.clear();
-            algorithms.add(Algorithm.Naive);
+            //algorithms.add(Algorithm.Naive);
             algorithms.add(Algorithm.EmersonAndLei);
         }
 
@@ -128,7 +126,22 @@ public class Main {
 
             startTime = System.nanoTime();
             System.out.print("Build MixedKripkeStructure ");
-            MixedKripkeStructure mixedKripkeStructure = new MixedKripkeStructure(aldebaranStructure);
+            IMixedKripkeStructure mixedKripkeStructure = null;
+            try {
+                mixedKripkeStructure = new MixedKripkeStructure(aldebaranStructure);
+            } catch(OutOfMemoryError e) {
+                try {
+                    System.out.println();
+                    System.out.println("No memory?");
+                    System.out.println("We just ignore memory errors try again with memory efficient structure.");
+                    mixedKripkeStructure = new ListMixedKripkeStructure(aldebaranStructure);
+                } catch(OutOfMemoryError em) {
+                    System.out.println();
+                    System.out.println("Yeah we still weren't able to allocate enough memory.");
+                    System.out.println("Sit tight we are upscaling for larger models however this might take some time.");
+                    mixedKripkeStructure = new DBMixedKripkeStructure(aldebaranStructure);
+                }
+            }
             System.out.printf("(%f ms) \n", (System.nanoTime() - startTime) / (float) 1000000);
             aldebaranStructure = null; // Clear memory
 

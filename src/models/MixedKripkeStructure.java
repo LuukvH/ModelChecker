@@ -58,14 +58,10 @@ public class MixedKripkeStructure implements IMixedKripkeStructure {
                 for (int b = 0; b < nr_of_states; b++)
                     m[b] = new BitSet(nr_of_states);
 
-                m = new BitSet[0];
                 labelmap.put(label, m);
             }
 
             m[end].set(start);
-
-            if (i % 1000 == 1)
-                System.out.println(String.format("%d/%d", i, transitions.size()));
         }
     }
 

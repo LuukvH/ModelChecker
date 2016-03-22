@@ -33,7 +33,7 @@ public class Boolean {
     public void Expression1() throws Exception {
         String formula = "true";
         BitSet result = mixedKripkeStructure.Evaluate(formula, algo).answer;
-        BitSet expected_result = mixedKripkeStructure.States;
+        BitSet expected_result = mixedKripkeStructure.States();
         assertEquals(expected_result, result);
     }
 
@@ -65,7 +65,7 @@ public class Boolean {
     public void Expression5() throws Exception {
         String formula = "(true && true)";
         BitSet result = mixedKripkeStructure.Evaluate(formula, algo).answer;
-        BitSet expected_result = mixedKripkeStructure.States;
+        BitSet expected_result = mixedKripkeStructure.States();
         assertEquals(expected_result, result);
     }
 
@@ -73,7 +73,7 @@ public class Boolean {
     public void Expression6() throws Exception {
         String formula = "(false || true)";
         BitSet result = mixedKripkeStructure.Evaluate(formula, algo).answer;
-        BitSet expected_result = mixedKripkeStructure.States;
+        BitSet expected_result = mixedKripkeStructure.States();
         assertEquals(expected_result, result);
     }
 
@@ -89,7 +89,7 @@ public class Boolean {
     public void Expression8() throws Exception {
         String formula = "(true || false)";
         BitSet result = mixedKripkeStructure.Evaluate(formula, algo).answer;
-        BitSet expected_result = mixedKripkeStructure.States;
+        BitSet expected_result = mixedKripkeStructure.States();
         assertEquals(expected_result, result);
     }
 

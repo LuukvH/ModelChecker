@@ -1,7 +1,6 @@
 import aldebaran.AldebaranReader;
 import enums.Algorithm;
-import models.Aldebaran;
-import models.MixedKripkeStructure;
+import models.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,7 +13,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class Combined {
 
-    MixedKripkeStructure mixedKripkeStructure;
+    IMixedKripkeStructure mixedKripkeStructure;
     Algorithm algo;
 
     @Before

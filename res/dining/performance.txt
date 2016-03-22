@@ -1,17 +1,11 @@
 file,algorithm,nu X. (([i]X && ([plato]X && [others]X )) && mu Y. ([i]Y && (<plato>true || <others>true)) ),nu X. (([i]X && [others]X ) && nu Y. (<i>Y || <others>Y) ),nu X. (([i]X && ([plato]X && [others]X )) && mu Y. ((<i>Y || <others>Y) || <plato>true )),nu X. mu Y. ( (<plato>X || <i>Y) || <others>Y)
-res\dining\dining_2.aut,Naive,2396836,3187490,5709883,894297
-res\dining\dining_2.aut,EmersonAndLei,612979,880084,1398302,431750
-res\dining\dining_3.aut,Naive,1149557,2965989,5445739,980766
-res\dining\dining_3.aut,EmersonAndLei,14164253,672204,1491878,895482
-res\dining\dining_4.aut,Naive,5151391,4993853,21804870,1505500
-res\dining\dining_4.aut,EmersonAndLei,1615066,1251425,2613007,871200
-res\dining\dining_5.aut,Naive,4127983,3012184,16868466,1852558
-res\dining\dining_5.aut,EmersonAndLei,2912093,3693271,12643354,2953551
-res\dining\dining_6.aut,Naive,14109173,13198292,54437256,5400728
-res\dining\dining_6.aut,EmersonAndLei,6101952,11624684,17166367,6820944
-res\dining\dining_7.aut,Naive,55968222,58371573,357910921,52236455
-res\dining\dining_7.aut,EmersonAndLei,27853520,35825798,64445097,31836402
-res\dining\dining_8.aut,Naive,755064923,761253935,4306739924,355727295
-res\dining\dining_8.aut,EmersonAndLei,158808891,231516468,410406781,180198593
-res\dining\dining_9.aut,Naive,5256787185,5916682855,48503698009,4156279982
-res\dining\dining_9.aut,EmersonAndLei,1747479976,2822609856,4793790377,2239531981
+res\dining\dining_10.aut,EmersonAndLei,845648521,1252637216,2229006584,967671097
+res\dining\dining_11.aut,EmersonAndLei,3099073366,5233024604,3684007577,1229400622
+res\dining\dining_2.aut,EmersonAndLei,365478,204828,360568,129412
+res\dining\dining_3.aut,EmersonAndLei,234280,178053,407871,171806
+res\dining\dining_4.aut,EmersonAndLei,680529,287384,439555,167789
+res\dining\dining_5.aut,EmersonAndLei,832253,1044667,2393676,998704
+res\dining\dining_6.aut,EmersonAndLei,5464756,8524681,11090162,3577127
+res\dining\dining_7.aut,EmersonAndLei,12137507,12992518,30375675,15328182
+res\dining\dining_8.aut,EmersonAndLei,113154284,126127168,265531114,115560454
+res\dining\dining_9.aut,EmersonAndLei,834460630,1181594044,2169167814,985720055

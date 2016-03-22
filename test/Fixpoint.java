@@ -33,7 +33,7 @@ public class Fixpoint {
     public void Expression1() throws Exception {
         String formula = "nu X. X";
         BitSet result = mixedKripkeStructure.Evaluate(formula, algo).answer;
-        BitSet expected_result = mixedKripkeStructure.States;
+        BitSet expected_result = mixedKripkeStructure.States();
         assertEquals(expected_result, result);
     }
 
@@ -49,7 +49,7 @@ public class Fixpoint {
     public void Expression3() throws Exception {
         String formula = "nu X. mu Y. (X || Y)";
         BitSet result = mixedKripkeStructure.Evaluate(formula, algo).answer;
-        BitSet expected_result = mixedKripkeStructure.States;
+        BitSet expected_result = mixedKripkeStructure.States();
         assertEquals(expected_result, result);
     }
 

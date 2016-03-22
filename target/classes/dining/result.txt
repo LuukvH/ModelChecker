@@ -1,17 +1,11 @@
 file,algorithm,nu X. (([i]X && ([plato]X && [others]X )) && mu Y. ([i]Y && (<plato>true || <others>true)) ),nu X. (([i]X && [others]X ) && nu Y. (<i>Y || <others>Y) ),nu X. (([i]X && ([plato]X && [others]X )) && mu Y. ((<i>Y || <others>Y) || <plato>true )),nu X. mu Y. ( (<plato>X || <i>Y) || <others>Y)
-res\dining\dining_2.aut,Naive,False,False,False,True
+res\dining\dining_10.aut,EmersonAndLei,False,False,False,True
+res\dining\dining_11.aut,EmersonAndLei,False,False,False,True
 res\dining\dining_2.aut,EmersonAndLei,False,False,False,True
-res\dining\dining_3.aut,Naive,False,False,False,True
 res\dining\dining_3.aut,EmersonAndLei,False,False,False,True
-res\dining\dining_4.aut,Naive,False,False,False,True
 res\dining\dining_4.aut,EmersonAndLei,False,False,False,True
-res\dining\dining_5.aut,Naive,False,False,False,True
 res\dining\dining_5.aut,EmersonAndLei,False,False,False,True
-res\dining\dining_6.aut,Naive,False,False,False,True
 res\dining\dining_6.aut,EmersonAndLei,False,False,False,True
-res\dining\dining_7.aut,Naive,False,False,False,True
 res\dining\dining_7.aut,EmersonAndLei,False,False,False,True
-res\dining\dining_8.aut,Naive,False,False,False,True
 res\dining\dining_8.aut,EmersonAndLei,False,False,False,True
-res\dining\dining_9.aut,Naive,False,False,False,True
 res\dining\dining_9.aut,EmersonAndLei,False,False,False,True
