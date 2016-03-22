@@ -14,7 +14,9 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Set;
 
 /**
  * Created by laj on 20-2-2016.
@@ -40,6 +42,7 @@ public class AldebaranReader {
 
     public Aldebaran ReadFile(String filename) {
         Aldebaran aldebaran;
+        Set<String> labels = new HashSet<String>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
             String line;
@@ -64,6 +67,7 @@ public class AldebaranReader {
                 splitline[2]=splitline[2].replace(')', ' ').trim();
                 transition.setStartState(Integer.parseInt(splitline[0]));
                 transition.setLabel(splitline[1]);
+                labels.add(splitline[1]);
                 transition.setEndState(Integer.parseInt(splitline[2]));
                 aldebaran.transitions.add(transition);
             }
@@ -72,6 +76,7 @@ public class AldebaranReader {
             return null;
         }
 
+        aldebaran.setNrOfLabels(labels.size());
         return aldebaran;
     }
 }
