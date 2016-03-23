@@ -1,0 +1,2 @@
+file,algorithm,[tau]true
+res\competition\demanding_children_10.aut,EmersonAndLei,200366

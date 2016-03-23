@@ -1,11 +1,11 @@
 file,algorithm,nu X. (([i]X && ([plato]X && [others]X )) && mu Y. ([i]Y && (<plato>true || <others>true)) ),nu X. (([i]X && [others]X ) && nu Y. (<i>Y || <others>Y) ),nu X. (([i]X && ([plato]X && [others]X )) && mu Y. ((<i>Y || <others>Y) || <plato>true )),nu X. mu Y. ( (<plato>X || <i>Y) || <others>Y)
-res\dining\dining_10.aut,EmersonAndLei,861945955,1329035813,2679324648,994681613
-res\dining\dining_11.aut,EmersonAndLei,3089149697,4574542875,3287017076,1247313028
-res\dining\dining_2.aut,EmersonAndLei,165558,153064,201258,115133
-res\dining\dining_3.aut,EmersonAndLei,257486,324422,411887,159756
-res\dining\dining_4.aut,EmersonAndLei,801016,203936,462760,159757
-res\dining\dining_5.aut,EmersonAndLei,898744,824666,2457489,510508
-res\dining\dining_6.aut,EmersonAndLei,5361673,7541595,11194584,5643702
-res\dining\dining_7.aut,EmersonAndLei,14315199,15569602,34418683,17974434
-res\dining\dining_8.aut,EmersonAndLei,136545279,144177017,288406247,115929948
-res\dining\dining_9.aut,EmersonAndLei,835871668,1158633677,2197571963,1028754900
+res\dining\dining_02.aut,EmersonAndLei,1110266,801016,2909092,689453
+res\dining\dining_03.aut,EmersonAndLei,868399,1427102,2664549,1539110
+res\dining\dining_04.aut,EmersonAndLei,1780084,544423,1978665,517648
+res\dining\dining_05.aut,EmersonAndLei,1838096,1370875,5506704,1251280
+res\dining\dining_06.aut,EmersonAndLei,6608491,4396885,12027730,3265199
+res\dining\dining_07.aut,EmersonAndLei,33581076,46036311,57076493,26781590
+res\dining\dining_08.aut,EmersonAndLei,280799498,329033583,827334492,226109540
+res\dining\dining_09.aut,EmersonAndLei,985772266,1534511726,2604966743,1186606751
+res\dining\dining_10.aut,EmersonAndLei,637729846,928254433,1698700749,738360617
+res\dining\dining_11.aut,EmersonAndLei,2465710951,3840209648,3182489218,1186967765

@@ -15,6 +15,16 @@ public class Main {
         int nrofiterations = 1;
         String folder = "";
 
+        // Do this one for a foler
+        args = new String[6];
+        args[0] = "-t";
+        args[1] = "res/competition/";
+        args[2] = "-i";
+        args[3] = "1";
+        args[4] = "-f";
+        args[5] = "[tau]true";
+
+
         Set<File> models = new OrderedHashSet<File>();
         Set<String> formulas = new OrderedHashSet<String>();
         Set<Algorithm> algorithms = new OrderedHashSet<>();
@@ -98,18 +108,6 @@ public class Main {
             return;
         }
 
-        // Create header
-        StringBuilder performancestring = new StringBuilder();
-        StringBuilder resultstring = new StringBuilder();
-        performancestring.append("file,algorithm");
-        resultstring.append("file,algorithm");
-        for (String formula : formulas) {
-            performancestring.append("," + formula);
-            resultstring.append("," + formula);
-        }
-        performancestring.append('\n');
-        resultstring.append('\n');
-
         for (File model : models) {
 
             Long startTime;
@@ -146,48 +144,17 @@ public class Main {
             aldebaranStructure = null; // Clear memory
 
             for (Algorithm algorithm : algorithms) {
-                performancestring.append(String.format("%s,%s",model.toString(), algorithm.toString())); // Add algorithm to output
-                resultstring.append(String.format("%s,%s",model.toString(), algorithm.toString())); // Add algorithm to output
                 for (String formula : formulas) {
-                    Long resultsum = 0L;
                     String answer = "";
                     for (int i = 0; i < nrofiterations; i++) {
                         System.out.print(String.format("Evaluate %s %s ", algorithm.toString(), formula));
                         Result result = mixedKripkeStructure.Evaluate(formula, algorithm);
                         answer = result.answer.get(0) ? "True" : "False";
-                        resultsum += result.duration;
-                        System.out.println(String.format("-> %s (%f ms)", answer, result.duration / (float) 1000000));
+                        System.out.println(String.format("(%f ms) \n-> %s", result.duration / (float) 1000000, answer));
                     }
-                    Long result = resultsum / nrofiterations;
-                    performancestring.append(String.format(",%d", result));
-                    resultstring.append(String.format(",%s", answer));
-                    System.out.println(String.format("Average: %f ms", result / (float) 1000000));
                 }
-                performancestring.append('\n');
-                resultstring.append('\n');
             }
             System.out.println();
-        }
-
-        if (performanceTest) {
-            // Write result file
-            try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(folder + "performance.txt"), "utf-8"))) {
-                writer.write(performancestring.toString());
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-
-            // Write result file
-            try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(folder + "result.txt"), "utf-8"))) {
-                writer.write(resultstring.toString());
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-
-            System.out.println("-- Report --");
-            System.out.print(performancestring.toString());
-            System.out.println();
-            System.out.print(resultstring.toString());
         }
     }
 }
