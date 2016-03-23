@@ -1,0 +1,1 @@
+nu X. (  ([tau]X && [visitc]X)  && mu Y. ( (<tau>Y || <visitc>Y ) || <starve>true ) )

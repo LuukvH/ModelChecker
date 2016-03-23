@@ -6,6 +6,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.BitSet;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 
@@ -32,64 +34,64 @@ public class Boolean {
     @Test
     public void Expression1() throws Exception {
         String formula = "true";
-        BitSet result = mixedKripkeStructure.Evaluate(formula, algo).answer;
-        BitSet expected_result = mixedKripkeStructure.States();
+        Set<Integer> result = mixedKripkeStructure.Evaluate(formula, algo).answer;
+        Set<Integer> expected_result = mixedKripkeStructure.States();
         assertEquals(expected_result, result);
     }
 
     @Test
     public void Expression2() throws Exception {
         String formula = "false";
-        BitSet result = mixedKripkeStructure.Evaluate(formula, algo).answer;
-        BitSet expected_result = new BitSet(mixedKripkeStructure.StateSize());
+        Set<Integer> result = mixedKripkeStructure.Evaluate(formula, algo).answer;
+        Set<Integer> expected_result = new HashSet<Integer>(mixedKripkeStructure.StateSize());
         assertEquals(expected_result, result);
     }
 
     @Test
     public void Expression3() throws Exception {
         String formula = "(false && true)";
-        BitSet result = mixedKripkeStructure.Evaluate(formula, algo).answer;
-        BitSet expected_result = new BitSet(mixedKripkeStructure.StateSize());
+        Set<Integer> result = mixedKripkeStructure.Evaluate(formula, algo).answer;
+        Set<Integer> expected_result = new HashSet<Integer>(mixedKripkeStructure.StateSize());
         assertEquals(expected_result, result);
     }
 
     @Test
     public void Expression4() throws Exception {
         String formula = "(true && false)";
-        BitSet result = mixedKripkeStructure.Evaluate(formula, algo).answer;
-        BitSet expected_result = new BitSet(mixedKripkeStructure.StateSize());
+        Set<Integer> result = mixedKripkeStructure.Evaluate(formula, algo).answer;
+        Set<Integer> expected_result = new HashSet<Integer>(mixedKripkeStructure.StateSize());
         assertEquals(expected_result, result);
     }
 
     @Test
     public void Expression5() throws Exception {
         String formula = "(true && true)";
-        BitSet result = mixedKripkeStructure.Evaluate(formula, algo).answer;
-        BitSet expected_result = mixedKripkeStructure.States();
+        Set<Integer> result = mixedKripkeStructure.Evaluate(formula, algo).answer;
+        Set<Integer> expected_result = mixedKripkeStructure.States();
         assertEquals(expected_result, result);
     }
 
     @Test
     public void Expression6() throws Exception {
         String formula = "(false || true)";
-        BitSet result = mixedKripkeStructure.Evaluate(formula, algo).answer;
-        BitSet expected_result = mixedKripkeStructure.States();
+        Set<Integer> result = mixedKripkeStructure.Evaluate(formula, algo).answer;
+        Set<Integer> expected_result = mixedKripkeStructure.States();
         assertEquals(expected_result, result);
     }
 
     @Test
     public void Expression7() throws Exception {
         String formula = "(false || false)";
-        BitSet result = mixedKripkeStructure.Evaluate(formula, algo).answer;
-        BitSet expected_result = new BitSet(mixedKripkeStructure.StateSize());
+        Set<Integer> result = mixedKripkeStructure.Evaluate(formula, algo).answer;
+        Set<Integer> expected_result = new HashSet<Integer>(mixedKripkeStructure.StateSize());
         assertEquals(expected_result, result);
     }
 
     @Test
     public void Expression8() throws Exception {
         String formula = "(true || false)";
-        BitSet result = mixedKripkeStructure.Evaluate(formula, algo).answer;
-        BitSet expected_result = mixedKripkeStructure.States();
+        Set<Integer> result = mixedKripkeStructure.Evaluate(formula, algo).answer;
+        Set<Integer> expected_result = mixedKripkeStructure.States();
         assertEquals(expected_result, result);
     }
 

@@ -1,0 +1,1 @@
+mu X. (([tau]X && <tau>true) || <visitc>mu Y. (<tau>Y || mu Z. ([tau]Z && [starve]false) ) )

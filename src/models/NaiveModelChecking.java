@@ -2,115 +2,154 @@ package models;
 
 import MuCalculus.MuCalculusParser;
 import MuCalculus.MuCalculusVisitor;
-import models.MixedKripkeStructure;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
-public class NaiveModelChecking extends AbstractParseTreeVisitor<BitSet> implements MuCalculusVisitor<BitSet> {
+public class NaiveModelChecking extends AbstractParseTreeVisitor<Set<Integer>> implements MuCalculusVisitor<Set<Integer>> {
 
-    private IMixedKripkeStructure mixedKripkeStructure;
-    private Map<String, BitSet> fixpoint = new HashMap<String, BitSet>();
+    private MixedKripkeStructure mixedKripkeStructure;
+    private Map<String, Set<Integer>> fixpoint = new HashMap<String, Set<Integer>>();
 
-    public NaiveModelChecking(IMixedKripkeStructure mixedKripkeStructure) {
+    public NaiveModelChecking(MixedKripkeStructure mixedKripkeStructure) {
         this.mixedKripkeStructure = mixedKripkeStructure;
     }
 
-    @Override public BitSet visitFormulae(MuCalculusParser.FormulaeContext ctx) {
+    @Override public Set<Integer> visitFormulae(MuCalculusParser.FormulaeContext ctx) {
         return visitChildren(ctx);
     }
 
-    @Override public BitSet visitConjunction(MuCalculusParser.ConjunctionContext ctx) {
-        BitSet s = visit(ctx.left());
-        s.and(visit(ctx.right()));
-        return s;
+    @Override public Set<Integer> visitConjunction(MuCalculusParser.ConjunctionContext ctx) {
+        Set<Integer> left = visit(ctx.left());
+        Set<Integer> right = visit(ctx.right());
+
+        left.retainAll(right);
+        return left;
     }
 
-    @Override public BitSet visitDisjunction(MuCalculusParser.DisjunctionContext ctx) {
-        BitSet s = visit(ctx.left());
-        s.or(visit(ctx.right()));
-        return s;
+    @Override public Set<Integer> visitDisjunction(MuCalculusParser.DisjunctionContext ctx) {
+        Set<Integer> left = visit(ctx.left());
+        Set<Integer> right = visit(ctx.right());
+
+        left.addAll(right);
+        return left;
     }
 
-    @Override public BitSet visitDiamond(MuCalculusParser.DiamondContext ctx) {
+    @Override public Set<Integer> visitDiamond(MuCalculusParser.DiamondContext ctx) {
         String label = ctx.label().getText();
         return diamond(label, visit(ctx.formulae()));
     }
 
-    private BitSet diamond(String label, BitSet bs) {
-        return mixedKripkeStructure.getTransitions(label, bs);
+    private Set<Integer> not(Set<Integer> s) {
+        Set<Integer> states = new HashSet<Integer>(mixedKripkeStructure.StateSize());
+        states.addAll(mixedKripkeStructure.States());
+        states.removeAll(s);
+        return states;
     }
 
-    private BitSet not(BitSet s) {
-        s.xor(mixedKripkeStructure.States());
-        return s;
+    private Set<Integer> diamond(String label, Set<Integer> s) {
+        Set<Integer> states = new HashSet<Integer>(mixedKripkeStructure.StateSize());
+        states.addAll(mixedKripkeStructure.getTransitions(label, s));
+        return states;
     }
 
-    @Override public BitSet visitBox(MuCalculusParser.BoxContext ctx) {
+    private Set<Integer> box(String label, Set<Integer> s) {
+        return not(diamond(label, not(s)));
+    }
+
+    @Override public Set<Integer> visitBox(MuCalculusParser.BoxContext ctx) {
         String label = ctx.label().getText();
-        return not(diamond(label, not(visit(ctx.formulae()))));
+        return box(label, (visit(ctx.formulae())));
     }
 
-    @Override public BitSet visitLeastfixpoint(MuCalculusParser.LeastfixpointContext ctx) {
+    @Override public Set<Integer> visitLeastfixpoint(MuCalculusParser.LeastfixpointContext ctx) {
         String variable = ctx.startrecursion().getText();
-        BitSet s = new BitSet(mixedKripkeStructure.StateSize());
-        fixpoint.put(variable, s);
-        BitSet nstates = visit(ctx.formulae());
+        Set<Integer> states = new HashSet<Integer>();
+        Set<Integer> nstates = visit(ctx.formulae());
 
-        while (!s.equals(nstates)) {
-            s.or(nstates);
-            fixpoint.put(variable, s);
+        // Debugging only //
+        int i = 0;
+        System.out.println(String.format("Least fixpoint itteration %d: %s", i, states.toString()));
+        // Debugging only //
+
+        while (!states.equals(nstates)) {
+            states.addAll(nstates);
+
+            // Debugging only //
+            i++;
+            System.out.println(String.format("Least fixpoint itteration %d: %s", i, states.toString()));
+            // Debugging only //
+
+            fixpoint.put(variable, states);
             nstates = visit(ctx.formulae());
         }
-        return s;
+        return states;
     }
 
-    @Override public BitSet visitGreatestfixpoint(MuCalculusParser.GreatestfixpointContext ctx) {
+    @Override public Set<Integer> visitGreatestfixpoint(MuCalculusParser.GreatestfixpointContext ctx) {
         String variable = ctx.startrecursion().getText();
-        BitSet s = (BitSet)mixedKripkeStructure.States().clone();
-        fixpoint.put(variable, s);
-        BitSet nstates = visit(ctx.formulae());
+        Set<Integer> states = new HashSet<Integer>();
+        states.addAll(mixedKripkeStructure.States());
+        fixpoint.put(variable, states);
+        Set<Integer> nstates = visit(ctx.formulae());
 
-        while (!s.equals(nstates)) {
-            s.and(nstates);
-            fixpoint.put(variable, s);
+        // Debugging only //
+        int i = 0;
+        System.out.println(String.format("Greatest fixpoint itteration %d: %s", i, states.toString()));
+        // Debugging only //
+
+        while (!states.equals(nstates)) {
+            states.retainAll(nstates);
+
+            // Debugging only //
+            i++;
+            System.out.println(String.format("Greatest fixpoint itteration %d: %s", i, states.toString()));
+            // Debugging only //
+
+            fixpoint.put(variable, states);
             nstates = visit(ctx.formulae());
         }
-        return s;
+
+        return states;
     }
 
-    @Override public BitSet visitLeft(MuCalculusParser.LeftContext ctx) {
+    @Override public Set<Integer> visitLeft(MuCalculusParser.LeftContext ctx) {
         return visit(ctx.formulae());
     }
 
-    @Override public BitSet visitRight(MuCalculusParser.RightContext ctx) {
+    @Override public Set<Integer> visitRight(MuCalculusParser.RightContext ctx) {
         return visit(ctx.formulae());
     }
 
     @Override
-    public BitSet visitLabel(MuCalculusParser.LabelContext ctx) {
-        return new BitSet(mixedKripkeStructure.StateSize());
+    public Set<Integer> visitLabel(MuCalculusParser.LabelContext ctx) {
+        return new HashSet<Integer>();
     }
 
-    @Override public BitSet visitMfalse(MuCalculusParser.MfalseContext ctx) {
-        return new BitSet(mixedKripkeStructure.StateSize());
+    @Override public Set<Integer> visitMfalse(MuCalculusParser.MfalseContext ctx) {
+        return new HashSet<Integer>();
     }
 
-    @Override public BitSet visitMtrue(MuCalculusParser.MtrueContext ctx) {
-        BitSet s = (BitSet)mixedKripkeStructure.States().clone();
-        return s;
+    @Override public Set<Integer> visitMtrue(MuCalculusParser.MtrueContext ctx) {
+        Set states = new HashSet<Integer>();
+        states.addAll(mixedKripkeStructure.States());
+        return states;
     }
 
-    @Override public  BitSet visitStartrecursion(MuCalculusParser.StartrecursionContext ctx) {
-        return new BitSet(mixedKripkeStructure.StateSize());
+    @Override public  Set<Integer> visitStartrecursion(MuCalculusParser.StartrecursionContext ctx) {
+        Set<Integer> states = new HashSet<Integer>();
+        return states;
     }
 
-    @Override public  BitSet visitEndrecursion(MuCalculusParser.EndrecursionContext ctx) {
-        BitSet s = new BitSet(mixedKripkeStructure.StateSize());
-        BitSet f = fixpoint.get(ctx.getText());
+    @Override public  Set<Integer> visitEndrecursion(MuCalculusParser.EndrecursionContext ctx) {
+        Set<Integer> states = new HashSet<Integer>();
+        Set<Integer> f = fixpoint.get(ctx.getText());
         if (f!=null) {
-            s.or(f);
+            states.addAll(f);
         }
-        return s;
+        return states;
     }
 }

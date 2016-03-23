@@ -13,37 +13,32 @@ import java.util.*;
 /**
  * Created by laj on 21-2-2016.
  */
-public class MixedKripkeStructure implements IMixedKripkeStructure {
+public class MixedKripkeStructure {
 
     private int nr_of_states = 0;
-    private BitSet states;
-    public Map<String, BitSet[]> labelmap;
-
-    //public Map<Integer, Map<String, Set<Integer>>> transitionmap = new HashMap<Integer, Map<String, Set<Integer>>>();
+    private Set<Integer> states;
+    public Map<String, Set<Integer>[]> labelmap;
 
     public MixedKripkeStructure(Aldebaran aldebaranStructure) {
         nr_of_states = aldebaranStructure.getNrOfStates();
-        states = new BitSet(aldebaranStructure.getNrOfStates());
-        states.set(0, aldebaranStructure.getNrOfStates(), true);
+        states = new HashSet<>(aldebaranStructure.getNrOfStates());
 
         // Initialize memory
-        labelmap = new HashMap<String, BitSet[]>(aldebaranStructure.getNrOfLabels());
+        labelmap = new HashMap<String, Set<Integer>[]>(aldebaranStructure.getNrOfLabels());
 
         BuildLabelMap(aldebaranStructure.transitions);
     }
 
-    @Override
     public int StateSize() {
         return nr_of_states;
     }
 
-    public BitSet States() {
+    public Set<Integer> States() {
         return states;
     }
 
     private void BuildLabelMap(ArrayList<Transition> transitions) {
 
-       //System.out.print("[...................]");
         Transition t;
         for(int i = 0; i < transitions.size(); i++) {
             t = transitions.get(i);
@@ -52,34 +47,35 @@ public class MixedKripkeStructure implements IMixedKripkeStructure {
             Integer end = t.getEndState();
             String label = t.getLabel();
 
-            BitSet[] m = labelmap.get(label);
+            Set<Integer>[] m = labelmap.get(label);
             if (m == null) {
-                m = new BitSet[nr_of_states];
-                for (int b = 0; b < nr_of_states; b++)
-                    m[b] = new BitSet(nr_of_states);
+                m = new Set[nr_of_states];
+                for (int b = 0; b < nr_of_states; b++) {
+                    m[b] = new HashSet<Integer>();
+                }
 
                 labelmap.put(label, m);
             }
 
-            m[end].set(start);
+            m[end].add(start);
+            states.add(start);
+            states.add(end);
         }
     }
 
-    @Override
-    public BitSet getTransitions(String label, BitSet bs) {
-        BitSet s = new BitSet(StateSize());
+    public Set<Integer> getTransitions(String label, Set<Integer> bs) {
+        Set<Integer> s = new HashSet<Integer>(StateSize());
 
-        BitSet[] lm = labelmap.get(label);
-        for (int i = bs.nextSetBit(0); i != -1; i = bs.nextSetBit(i + 1)) {
-            BitSet ls = lm[i];
+        Set<Integer>[] lm = labelmap.get(label);
+        for (int i : bs) {
+            Set<Integer> ls = lm[i];
             if (ls != null) {
-                s.or(ls);
+                s.addAll(ls);
             }
         }
         return s;
     }
 
-    @Override
     public Result Evaluate(String formula, Algorithm algo) {
         MuCalculusLexer lexer = new MuCalculusLexer(new ANTLRInputStream(formula));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -91,14 +87,14 @@ public class MixedKripkeStructure implements IMixedKripkeStructure {
         Result result = new Result();
 
         if (algo == Algorithm.EmersonAndLei) {
-            MuCalculusVisitor<BitSet> modelChecking;
+            MuCalculusVisitor<Set<Integer>> modelChecking;
             modelChecking = new EmersonLeiModelChecking(this);
             startTime = System.nanoTime();
             result.answer = modelChecking.visit(tree);
             endTime = System.nanoTime();
             result.duration = (endTime - startTime);
         } else {
-            MuCalculusVisitor<BitSet> modelChecking;
+            MuCalculusVisitor<Set<Integer>> modelChecking;
             modelChecking = new NaiveModelChecking(this);
             startTime = System.nanoTime();
             result.answer = modelChecking.visit(tree);

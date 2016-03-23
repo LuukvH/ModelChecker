@@ -124,22 +124,7 @@ public class Main {
 
             startTime = System.nanoTime();
             System.out.print("Build MixedKripkeStructure ");
-            IMixedKripkeStructure mixedKripkeStructure = null;
-            try {
-                mixedKripkeStructure = new MixedKripkeStructure(aldebaranStructure);
-            } catch(OutOfMemoryError e) {
-                try {
-                    System.out.println();
-                    System.out.println("No memory?");
-                    System.out.println("We just ignore memory errors try again with memory efficient structure.");
-                    mixedKripkeStructure = new ListMixedKripkeStructure(aldebaranStructure);
-                } catch(OutOfMemoryError em) {
-                    System.out.println();
-                    System.out.println("Yeah we still weren't able to allocate enough memory.");
-                    System.out.println("Sit tight we are upscaling for larger models however this might take some time.");
-                    mixedKripkeStructure = new DBMixedKripkeStructure(aldebaranStructure);
-                }
-            }
+            MixedKripkeStructure mixedKripkeStructure = new MixedKripkeStructure(aldebaranStructure);
             System.out.printf("(%f ms) \n", (System.nanoTime() - startTime) / (float) 1000000);
             aldebaranStructure = null; // Clear memory
 
@@ -149,7 +134,7 @@ public class Main {
                     for (int i = 0; i < nrofiterations; i++) {
                         System.out.print(String.format("Evaluate %s %s ", algorithm.toString(), formula));
                         Result result = mixedKripkeStructure.Evaluate(formula, algorithm);
-                        answer = result.answer.get(0) ? "True" : "False";
+                        answer = result.answer.contains(0) ? "True" : "False";
                         System.out.println(String.format("(%f ms) \n-> %s", result.duration / (float) 1000000, answer));
                     }
                 }

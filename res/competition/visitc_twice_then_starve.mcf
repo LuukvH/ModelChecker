@@ -1,0 +1,1 @@
+mu X. (<tau>X || <visitc>mu Y. (<tau>Y || <visitc>mu Z. (( [tau]Z && <tau>true) && [visitc]false) ) )
